@@ -8,7 +8,7 @@ int main(void)
     const int screenWidth = 1280;
     const int screenHeight = 720;
 
-    InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
+    InitWindow(screenWidth, screenHeight, "Sacrifice");
     SetupImGui(true);
 
     // TODO: check on normal dpi displays
@@ -21,14 +21,11 @@ int main(void)
 
         ClearBackground(RAYWHITE);
 
-        DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
 #ifdef DEBUG
-        DrawText("Debug mode enabled!", 10, 10, 20, RED);
-#endif
-
         BeginImGuiFrame();
         ShowDebugUI();
         EndImGuiFrame();
+#endif
 
         EndDrawing();
     }

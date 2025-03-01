@@ -12,7 +12,7 @@ struct EntityManager {
 
 struct EntityManager* NewEntityManager(void);
 unsigned int NewEntity(struct EntityManager* manager);
-unsigned int* GetActiveEntities(struct EntityManager* manager);
+unsigned int* GetActiveEntities(struct EntityManager* manager, unsigned int* count);
 void RemoveEntity(struct EntityManager* manager, unsigned int entity);
 
 #endif

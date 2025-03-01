@@ -30,6 +30,9 @@ int main(void)
             ClearBackground(RAYWHITE);
 
             DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
+            #ifdef DEBUG
+                DrawText("Debug mode enabled!", 10, 10, 20, RED);
+            #endif
 
         EndDrawing();
         //----------------------------------------------------------------------------------

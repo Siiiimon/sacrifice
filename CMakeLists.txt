@@ -62,6 +62,8 @@ set_target_properties(imgui_wrapper PROPERTIES
 
 add_executable(${PROJECT_NAME}
     src/main.c
+    src/ecs/physics/movement_system.c
+    src/ecs/physics/position_component.c
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib rlImGui imgui_wrapper)
 
@@ -79,7 +81,9 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     vendor/raylib/src
     vendor/rlImGui
     vendor/imgui
-    src/debug
+
+    src
+    src/ecs/physics
 )
 
 # Checks if OSX and links appropriate frameworks (only required on MacOS)

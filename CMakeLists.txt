@@ -6,6 +6,8 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_CXX_STANDARD 11)  # Add C++ standard
 set(CMAKE_CXX_STANDARD_REQUIRED ON)  # Require C++11
 
+option(BUILD_TESTS "Build tests" ON)
+
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
@@ -66,4 +68,8 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 
 if (APPLE)
     target_link_libraries(${PROJECT_NAME} PRIVATE "-framework IOKit" "-framework Cocoa" "-framework OpenGL")
+endif()
+
+if (BUILD_TESTS)
+    add_subdirectory(tests)
 endif()

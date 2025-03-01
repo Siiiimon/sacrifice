@@ -15,6 +15,10 @@ struct EntityManager* NewEntityManager(void) {
     return manager;
 }
 
+void FreeEntityManager(struct EntityManager *manager) {
+    free(manager);
+}
+
 unsigned int NewEntity(struct EntityManager* manager) {
     unsigned int entity = manager->next_entity++;
     TraceLog(LOG_INFO, "new entity: %u", entity);
@@ -32,7 +36,7 @@ unsigned int* GetActiveEntities(struct EntityManager* manager, unsigned int* cou
     }
     for (unsigned int i = 0; i < manager->next_entity; ++i) {
         if (manager->active_entities[i]) {
-            active_entities[*count++] = i;
+            active_entities[(*count)++] = i;
         }
     }
     active_entities = realloc(active_entities, sizeof(unsigned int) * *count);

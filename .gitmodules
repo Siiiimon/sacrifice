@@ -10,3 +10,6 @@
 [submodule "vendor/cimgui"]
 	path = vendor/cimgui
 	url = git@github.com:cimgui/cimgui.git
+[submodule "vendor/greatest"]
+	path = vendor/greatest
+	url = git@github.com:silentbicycle/greatest.git

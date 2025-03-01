@@ -36,6 +36,7 @@ set_target_properties(rlImGui PROPERTIES
 
 add_executable(${PROJECT_NAME}
     src/main.c
+    src/ecs/entity_manager.c
     src/ecs/physics/movement_system.c
     src/ecs/physics/position_component.c
 )
@@ -58,6 +59,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     vendor/cimgui/imgui
 
     src
+    src/ecs
     src/ecs/physics
 )
 

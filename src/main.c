@@ -2,6 +2,7 @@
 #include "cimgui_include.h"
 
 #include "game_context.h"
+#include "ecs/entity_manager.h"
 #include "ecs/physics/position_component.h"
 #include "ecs/physics/movement_system.h"
 #include <stdlib.h>
@@ -17,9 +18,10 @@ int main(void)
     game_context->game_height = 720;
 
     game_context->world = malloc(sizeof(struct World));
+    game_context->world->entities = NewEntityManager();
     game_context->world->positions = NewPositionComponentArray();
 
-    unsigned int player = 0;
+    unsigned int player = NewEntity(game_context->world->entities);
     AddPositionToEntity(player, game_context->world->positions, game_context->game_width / 2, game_context->game_height / 2);
 
     InitWindow(1280, 720, "Sacrifice");
@@ -60,6 +62,12 @@ int main(void)
                 "Unknown"
             #endif
             );
+        }
+        igEnd();
+
+        igBegin("Entities", NULL, 0);
+        if (igCollapsingHeader_TreeNodeFlags("Player", ImGuiTreeNodeFlags_DefaultOpen)) {
+            igText("Position: (%d, %d)", player_position->x, player_position->y);
         }
         igEnd();
 

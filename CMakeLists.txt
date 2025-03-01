@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.15)
 project(sacrifice)
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 # build vendor dependencies
 add_subdirectory(vendor/raylib)
 

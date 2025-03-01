@@ -23,6 +23,7 @@ int main(void)
     game_context->world->velocities = NewVelocityComponentArray();
 
     unsigned int player = NewEntity(game_context->world->entities);
+    TraceLog(LOG_INFO, "player id: %u", player);
     AddPositionToEntity(player, game_context->world->positions, game_context->game_width / 2, game_context->game_height / 2);
     AddVelocityToEntity(player, game_context->world->velocities, 1.0f, -1.0f);
 
@@ -74,13 +75,20 @@ int main(void)
 
         igSeparator();
 
-        unsigned int* active_entities = GetActiveEntities(game_context->world->entities);
+        unsigned int active_entity_count;
+        unsigned int* active_entities = GetActiveEntities(game_context->world->entities, &active_entity_count);
         if (active_entities != NULL) {
-            for (unsigned int i = 0; i < game_context->world->entities->next_entity; ++i) {
+            for (unsigned int i = 0; i <= active_entity_count; ++i) {
                 unsigned int entity = active_entities[i];
                 igText("Entity ID: %u", entity);
-                struct PositionComponent* entity_position = GetPosition(game_context->world->positions, entity);
-                igText("Position: (%d, %d)", entity_position->x, entity_position->y);
+                struct PositionComponent* position = GetPosition(game_context->world->positions, entity);
+                if (position) {
+                    igText("Position: (%f, %f)", position->x, position->y);
+                }
+                struct VelocityComponent* velocity = GetVelocity(game_context->world->velocities, entity);
+                if (velocity) {
+                    igText("Velocity: (%f, %f)", velocity->x, velocity->y);
+                }
             }
         }
         free(active_entities);

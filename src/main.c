@@ -1,11 +1,18 @@
 #include "raylib.h"
+#include "imgui_wrapper.h"
 
 int main(void)
 {
-    const int screenWidth = 800;
-    const int screenHeight = 450;
+    SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_VSYNC_HINT);
+
+    const int screenWidth = 1280;
+    const int screenHeight = 720;
 
     InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
+    SetupImGui(true);
+
+    // TODO: check on normal dpi displays
+    SetImGuiDpiScale(1.0f);
 
     SetTargetFPS(60);
 
@@ -19,9 +26,14 @@ int main(void)
         DrawText("Debug mode enabled!", 10, 10, 20, RED);
 #endif
 
+        BeginImGuiFrame();
+        ShowDebugUI();
+        EndImGuiFrame();
+
         EndDrawing();
     }
 
+    ShutdownImGui();
     CloseWindow();
 
     return 0;

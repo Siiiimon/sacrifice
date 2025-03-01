@@ -1,10 +1,10 @@
 #ifndef ECS_PHYSICS_POSITION_COMPONENT_H
 #define ECS_PHYSICS_POSITION_COMPONENT_H
 
+#include "defs.h"
+
 struct PositionComponentArray {
-    struct PositionComponent* components[256];
-    unsigned int entities[256];
-    unsigned int count;
+    struct PositionComponent* components[MAX_ENTITIES];
 };
 
 struct PositionComponent {

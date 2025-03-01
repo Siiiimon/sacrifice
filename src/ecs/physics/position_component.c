@@ -1,4 +1,5 @@
 #include "position_component.h"
+#include "defs.h"
 #include "raylib.h"
 #include <stdlib.h>
 
@@ -9,7 +10,6 @@ struct PositionComponentArray* NewPositionComponentArray(void) {
         return NULL;
     }
 
-    position_components->count = 0;
     return position_components;
 }
 
@@ -18,7 +18,7 @@ void FreePositionComponentArray(struct PositionComponentArray* position_componen
         return;
     }
 
-    for (unsigned int i = 0; i < position_components->count; i++) {
+    for (unsigned int i = 0; i < MAX_ENTITIES; i++) {
         FreePosition(position_components->components[i]);
     }
 }
@@ -32,9 +32,11 @@ void AddPositionToEntity(unsigned int entity, struct PositionComponentArray* pos
     component->x = x;
     component->y = y;
 
-    position_components->entities[position_components->count] = entity;
-    position_components->components[position_components->count] = component;
-    position_components->count++;
+    if (position_components->components[entity] != NULL) {
+        TraceLog(LOG_ERROR, "entity %u already has a PositionComponent", entity);
+        FreePosition(position_components->components[entity]);
+    }
+    position_components->components[entity] = component;
 }
 
 void FreePosition(struct PositionComponent* component) {
@@ -42,14 +44,5 @@ void FreePosition(struct PositionComponent* component) {
 }
 
 struct PositionComponent* GetPosition(struct PositionComponentArray* position_components, unsigned int entity) {
-    if (position_components == NULL || entity >= position_components->count) {
-        return NULL;
-    }
-
-    for (unsigned int i = 0; i < position_components->count; i++) {
-        if (position_components->entities[i] == entity) {
-            return position_components->components[i];
-        }
-    }
-    return NULL;
+    return position_components->components[entity];
 }

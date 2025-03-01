@@ -1,10 +1,12 @@
 #include "movement_system.h"
 #include <stdlib.h>
 
-void UpdateMovement(struct PositionComponentArray* position_components) {
+void UpdateMovement(struct PositionComponentArray* positions, struct VelocityComponentArray* velocities) {
     for (unsigned int i = 0; i < MAX_ENTITIES; i++) {
-        struct PositionComponent* position = position_components->components[i];
-        if (position == NULL) continue;
-        position->x += 1.0f;
+        struct PositionComponent* position = positions->components[i];
+        struct VelocityComponent* velocity = velocities->components[i];
+        if (position == NULL || velocity == NULL) continue;
+        position->x += velocity->x;
+        position->y += velocity->y;
     }
 }

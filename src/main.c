@@ -20,9 +20,11 @@ int main(void)
     game_context->world = malloc(sizeof(struct World));
     game_context->world->entities = NewEntityManager();
     game_context->world->positions = NewPositionComponentArray();
+    game_context->world->velocities = NewVelocityComponentArray();
 
     unsigned int player = NewEntity(game_context->world->entities);
     AddPositionToEntity(player, game_context->world->positions, game_context->game_width / 2, game_context->game_height / 2);
+    AddVelocityToEntity(player, game_context->world->velocities, 1.0f, -1.0f);
 
     InitWindow(1280, 720, "Sacrifice");
     rlImGuiSetup(true);
@@ -33,7 +35,7 @@ int main(void)
     SetTargetFPS(60);
 
     while (!WindowShouldClose()) {
-        UpdateMovement(game_context->world->positions);
+        UpdateMovement(game_context->world->positions, game_context->world->velocities);
 
         BeginDrawing();
 

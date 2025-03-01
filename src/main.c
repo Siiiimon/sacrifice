@@ -66,9 +66,22 @@ int main(void)
         igEnd();
 
         igBegin("Entities", NULL, 0);
-        if (igCollapsingHeader_TreeNodeFlags("Player", ImGuiTreeNodeFlags_DefaultOpen)) {
-            igText("Position: (%d, %d)", player_position->x, player_position->y);
+        if (igCollapsingHeader_TreeNodeFlags("Entity Manager", ImGuiTreeNodeFlags_DefaultOpen)) {
+            igText("Next Entity Id: %u", game_context->world->entities->next_entity);
         }
+
+        igSeparator();
+
+        unsigned int* active_entities = GetActiveEntities(game_context->world->entities);
+        if (active_entities != NULL) {
+            for (unsigned int i = 0; i < game_context->world->entities->next_entity; ++i) {
+                unsigned int entity = active_entities[i];
+                igText("Entity ID: %u", entity);
+                struct PositionComponent* entity_position = GetPosition(game_context->world->positions, entity);
+                igText("Position: (%d, %d)", entity_position->x, entity_position->y);
+            }
+        }
+        free(active_entities);
         igEnd();
 
         rlImGuiEnd();

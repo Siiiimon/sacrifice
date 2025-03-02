@@ -9,6 +9,11 @@ struct SpriteComponentArray* NewSpriteComponentArray(void) {
         TraceLog(LOG_ERROR, "Failed to allocate memory for SpriteComponentArray");
         return NULL;
     }
+
+    for (int i = 0; i < MAX_ENTITIES; i++) {
+        sprites->components[i] = NULL;
+    }
+
     return sprites;
 }
 
@@ -23,7 +28,7 @@ void FreeSpriteComponentArray(struct SpriteComponentArray* sprites) {
 }
 
 
-void AddSpriteToEntity(unsigned int entity, struct SpriteComponentArray *sprites, Texture *texture) {
+void AddSpriteToEntity(unsigned int entity, struct SpriteComponentArray* sprites, Texture texture) {
     if (!sprites) {
         TraceLog(LOG_ERROR, "Failed to add Sprite because SpriteComponentArray is NULL");
         return;
@@ -43,7 +48,7 @@ void AddSpriteToEntity(unsigned int entity, struct SpriteComponentArray *sprites
 
     if (sprites->components[entity] != NULL) {
         TraceLog(LOG_ERROR, "entity %u already has a SpriteComponent", entity);
-        free(sprite);
+        FreeSprite(sprite);
         return;
     }
     sprites->components[entity] = sprite;
@@ -66,7 +71,6 @@ void FreeSprite(struct SpriteComponent *sprite) {
     if (!sprite) {
         return;
     }
-    if (sprite->texture)
-        UnloadTexture(*sprite->texture);
+    UnloadTexture(sprite->texture);
     free(sprite);
 }

@@ -9,13 +9,13 @@ struct SpriteComponentArray {
 };
 
 struct SpriteComponent {
-    Texture* texture;
+    Texture texture;
 };
 
 struct SpriteComponentArray* NewSpriteComponentArray(void);
 void FreeSpriteComponentArray(struct SpriteComponentArray* sprites);
 
-void AddSpriteToEntity(unsigned int entity, struct SpriteComponentArray* sprites, Texture* texture);
+void AddSpriteToEntity(unsigned int entity, struct SpriteComponentArray* sprites, Texture texture);
 struct SpriteComponent* GetSprite(struct SpriteComponentArray* sprites, unsigned int entity);
 void FreeSprite(struct SpriteComponent* sprite);
 

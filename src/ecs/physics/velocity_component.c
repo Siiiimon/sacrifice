@@ -9,6 +9,11 @@ struct VelocityComponentArray* NewVelocityComponentArray(void) {
         TraceLog(LOG_ERROR, "failed to allocate memory for VelocityComponentArray");
         return NULL;
     }
+
+    for (unsigned int i = 0; i < MAX_ENTITIES; i++) {
+        velocities->components[i] = NULL;
+    }
+
     return velocities;
 }
 

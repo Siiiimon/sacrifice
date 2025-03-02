@@ -26,6 +26,7 @@ int main(void)
     game_context->game_height = 720;
 
     Texture cat = LoadTextureFromFile("assets/sprites/cat.png");
+    Texture wall_text = LoadTextureFromFile("assets/sprites/wall.png");
 
     game_context->world = malloc(sizeof(struct World));
     game_context->world->entities = NewEntityManager();
@@ -35,10 +36,16 @@ int main(void)
     game_context->world->player_move_speed = 3.0f;
 
     unsigned int player = NewEntity(game_context->world->entities);
+    unsigned int wall = NewEntity(game_context->world->entities);
     TraceLog(LOG_INFO, "player id: %u", player);
+    TraceLog(LOG_INFO, "wall id: %u", wall);
+
     AddPositionToEntity(player, game_context->world->positions, game_context->game_width / 2, game_context->game_height / 2);
     AddVelocityToEntity(player, game_context->world->velocities, 0.0f, 0.0f);
     AddSpriteToEntity(player, game_context->world->sprites, cat);
+
+    AddPositionToEntity(wall, game_context->world->positions, 200, (game_context->game_height / 2) - 75);
+    AddSpriteToEntity(wall, game_context->world->sprites, wall_text);
 
     rlImGuiSetup(true);
 

@@ -1,4 +1,6 @@
 #include "debug_entities.h"
+#include "cimgui_include.h"
+#include "debug_entity.h"
 #include <stdlib.h>
 
 void DrawEntitiesDebugUI(struct GameContext* game_context) {
@@ -7,26 +9,45 @@ void DrawEntitiesDebugUI(struct GameContext* game_context) {
         igText("Next Entity Id: %u", game_context->world->entities->next_entity);
     }
 
+    igSpacing();
     igSeparator();
+    igSpacing();
 
     unsigned int active_entity_count;
     unsigned int* active_entities = GetActiveEntities(game_context->world->entities, &active_entity_count);
     if (active_entities != NULL) {
-        for (unsigned int i = 0; i <= active_entity_count; ++i) {
-            unsigned int entity = active_entities[i];
-            igText("Entity ID: %u", entity);
-            struct PositionComponent* position = GetPosition(game_context->world->positions, entity);
-            if (position) {
-                igText("Position: (%f, %f)", position->x, position->y);
+        ImGuiTableFlags table_flags =
+            ImGuiTableFlags_SizingFixedFit |
+            ImGuiTableFlags_Resizable |
+            ImGuiTableFlags_RowBg |
+            ImGuiTableFlags_BordersOuter |
+            ImGuiTableFlags_BordersV;
+        if (igBeginTable("entities_table", 3, table_flags, (ImVec2){.x = 300.0f, .y = 100.0f}, 0.0f)) {
+            igTableSetupColumn("ID", ImGuiTableColumnFlags_None, 5.0f, 0);
+            igTableSetupColumn("Name", ImGuiTableColumnFlags_None, 15.0f, 1);
+            igTableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 0.0f, 2);
+
+            igTableHeadersRow();
+            for (unsigned int i = 0; i <= active_entity_count; ++i) {
+                unsigned int entity = active_entities[i];
+                igTableNextRow(0, 0.0f);
+                igTableNextColumn();
+                igText("%u", entity);
+                igTableNextColumn();
+                igText("Entity");
+                igTableNextColumn();
+                igPushID_Int(i);
+                if (igSmallButton("i")) {
+                    game_context->currently_inspected_entity_id = entity;
+                }
+                igPopID();
             }
-            struct VelocityComponent* velocity = GetVelocity(game_context->world->velocities, entity);
-            if (velocity) {
-                igText("Velocity: (%f, %f)", velocity->x, velocity->y);
-            }
-            // struct SpriteComponent* sprite = GetSprite(game_context->world->sprites, entity);
+            igEndTable();
         }
     }
     free(active_entities);
     igEnd();
+
+    DrawEntityInspector(game_context);
 
 }

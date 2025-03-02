@@ -1,6 +1,7 @@
 #include "debug_entity.h"
 #include "cimgui_include.h"
 #include "raylib.h"
+#include "rlImGui.h"
 
 static void DrawPositionDebug(struct PositionComponent* position) {
     DrawLineEx(
@@ -24,6 +25,7 @@ static void DrawSpriteDebug(struct SpriteComponent* sprite) {
     if (igCollapsingHeader_TreeNodeFlags("Sprite", ImGuiTreeNodeFlags_DefaultOpen)) {
         igText("Sprite ID: %u", sprite->texture.id);
         igText("Sprite Dimensions: %d x %d", sprite->texture.width, sprite->texture.height);
+        rlImGuiImage(&sprite->texture);
     }
 }
 
@@ -57,7 +59,4 @@ void DrawEntityInspector(struct GameContext* game_context) {
     }
 
     igEnd();
-
-    igShowDemoWindow(NULL);
-
 }

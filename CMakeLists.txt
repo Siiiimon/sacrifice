@@ -52,6 +52,7 @@ add_executable(${PROJECT_NAME}
 
     src/debug/debug.c
     src/debug/debug_entities.c
+    src/debug/debug_entity.c
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib rlImGui cimgui)
 

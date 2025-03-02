@@ -38,7 +38,12 @@ set_target_properties(rlImGui PROPERTIES
 
 add_executable(${PROJECT_NAME}
     src/main.c
+
+    src/io/texture_io.c
+
     src/ecs/entity_manager.c
+    src/ecs/render/render_system.c
+    src/ecs/render/sprite_component.c
     src/ecs/physics/movement_system.c
     src/ecs/physics/velocity_component.c
     src/ecs/physics/position_component.c
@@ -62,6 +67,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     vendor/cimgui/imgui
 
     src
+    src/io
     src/ecs
     src/ecs/physics
 )

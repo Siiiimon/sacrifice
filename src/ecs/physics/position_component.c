@@ -10,6 +10,10 @@ struct PositionComponentArray* NewPositionComponentArray(void) {
         return NULL;
     }
 
+    for (unsigned int i = 0; i < MAX_ENTITIES; i++) {
+        position_components->components[i] = NULL;
+    }
+
     return position_components;
 }
 

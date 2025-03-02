@@ -1,5 +1,4 @@
 #include "raylib.h"
-#include "cimgui_include.h"
 
 #include "game_context.h"
 #include "ecs/entity_manager.h"
@@ -12,6 +11,7 @@
 #include "input.h"
 #include "velocity_component.h"
 #include <stdlib.h>
+#include "debug/debug.h"
 
 struct GameContext* game_context = NULL;
 
@@ -65,52 +65,7 @@ int main(void)
 #ifdef DEBUG
         rlImGuiBegin();
 
-        igBegin("Debug", NULL, 0);
-        if (igCollapsingHeader_TreeNodeFlags("Performance", ImGuiTreeNodeFlags_DefaultOpen)) {
-            igText("FPS: %d", GetFPS());
-        }
-        if (igCollapsingHeader_TreeNodeFlags("System", ImGuiTreeNodeFlags_DefaultOpen)) {
-            igText("DPI scale: %f", GetWindowScaleDPI().x);
-            igText("Platform: %s",
-            #if defined(_WIN32)
-                "Windows"
-            #elif defined(__APPLE__)
-                "macOS"
-            #elif defined(__linux__)
-                "Linux"
-            #else
-                "Unknown"
-            #endif
-            );
-        }
-        igEnd();
-
-        igBegin("Entities", NULL, 0);
-        if (igCollapsingHeader_TreeNodeFlags("Entity Manager", ImGuiTreeNodeFlags_DefaultOpen)) {
-            igText("Next Entity Id: %u", game_context->world->entities->next_entity);
-        }
-
-        igSeparator();
-
-        unsigned int active_entity_count;
-        unsigned int* active_entities = GetActiveEntities(game_context->world->entities, &active_entity_count);
-        if (active_entities != NULL) {
-            for (unsigned int i = 0; i <= active_entity_count; ++i) {
-                unsigned int entity = active_entities[i];
-                igText("Entity ID: %u", entity);
-                struct PositionComponent* position = GetPosition(game_context->world->positions, entity);
-                if (position) {
-                    igText("Position: (%f, %f)", position->x, position->y);
-                }
-                struct VelocityComponent* velocity = GetVelocity(game_context->world->velocities, entity);
-                if (velocity) {
-                    igText("Velocity: (%f, %f)", velocity->x, velocity->y);
-                }
-                // struct SpriteComponent* sprite = GetSprite(game_context->world->sprites, entity);
-            }
-        }
-        free(active_entities);
-        igEnd();
+        DrawDebugUI(game_context);
 
         rlImGuiEnd();
 #endif

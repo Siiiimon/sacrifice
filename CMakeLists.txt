@@ -49,6 +49,9 @@ add_executable(${PROJECT_NAME}
     src/ecs/physics/movement_system.c
     src/ecs/physics/velocity_component.c
     src/ecs/physics/position_component.c
+
+    src/debug/debug.c
+    src/debug/debug_entities.c
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE raylib rlImGui cimgui)
 
@@ -73,6 +76,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     src/input
     src/ecs
     src/ecs/physics
+    src/debug
 )
 
 if (APPLE)

@@ -12,6 +12,7 @@ struct World {
     struct VelocityComponentArray* velocities;
     struct SpriteComponentArray* sprites;
 
+    float player_move_speed;
 };
 
 #endif

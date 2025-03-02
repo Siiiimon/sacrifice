@@ -41,6 +41,8 @@ add_executable(${PROJECT_NAME}
 
     src/io/texture_io.c
 
+    src/input/input.c
+
     src/ecs/entity_manager.c
     src/ecs/render/render_system.c
     src/ecs/render/sprite_component.c
@@ -68,6 +70,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
 
     src
     src/io
+    src/input
     src/ecs
     src/ecs/physics
 )

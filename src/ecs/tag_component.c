@@ -67,7 +67,7 @@ const char* GetTagName(enum ENTITY_TAG tag) {
             return "Player";
         case ENTITY_TAG_WALL:
             return "Wall";
-        case ENTITY_TAG_PROJECTILE:
+        case ENTITY_TAG_ENEMY:
             return "Projectile";
         default:
             return "Unknown";

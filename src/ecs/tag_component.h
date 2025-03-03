@@ -10,7 +10,7 @@ struct TagComponentArray {
 enum ENTITY_TAG {
     ENTITY_TAG_PLAYER = 0,
     ENTITY_TAG_WALL = 1 << 0,
-    ENTITY_TAG_PROJECTILE = 1 << 1,
+    ENTITY_TAG_ENEMY = 1 << 1,
 };
 
 struct TagComponent {

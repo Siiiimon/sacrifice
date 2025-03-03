@@ -13,7 +13,7 @@ void DrawCollisionBounds(RenderTexture2D debug_layer, struct PositionComponentAr
         struct PositionComponent* position = positions->components[i];
 
         if (collider->shape_type == COLLIDER_SHAPE_CIRCLE) {
-            if (collider->is_colliding) {
+            if (collider->colliding_count > 0) {
                 DrawCircleV(
                     CLITERAL(Vector2){
                         position->x + collider->offset.x,
@@ -33,7 +33,7 @@ void DrawCollisionBounds(RenderTexture2D debug_layer, struct PositionComponentAr
                 );
             }
         } else if (collider->shape_type == COLLIDER_SHAPE_RECTANGLE) {
-            if (collider->is_colliding) {
+            if (collider->colliding_count > 0) {
                 DrawRectangle(
                     position->x + collider->offset.x - collider->shape.rectangle.width / 2,
                     position->y + collider->offset.y - collider->shape.rectangle.height / 2,

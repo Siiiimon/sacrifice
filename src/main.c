@@ -17,6 +17,8 @@
 #include <stdlib.h>
 #include "debug/debug.h"
 
+#include <chase_behaviour_system.h>
+
 struct GameContext* game_context = NULL;
 
 int main(void)
@@ -44,6 +46,7 @@ int main(void)
     game_context->world->velocities = NewVelocityComponentArray();
     game_context->world->sprites = NewSpriteComponentArray();
     game_context->world->colliders = NewColliderComponentArray();
+    game_context->world->chase_behaviours = NewChaseBehaviourComponentArray();
 
     game_context->world->player_move_speed = 6.0f;
 
@@ -73,8 +76,10 @@ int main(void)
 
     AddTagToEntity(rotund, game_context->world->tags, ENTITY_TAG_PROJECTILE);
     AddPositionToEntity(rotund, game_context->world->positions, game_context->game_width - 300, game_context->game_height / 2);
+    AddVelocityToEntity(rotund, game_context->world->velocities, 0.0f, 0.0f);
     AddSpriteToEntity(rotund, game_context->world->sprites, rotund_text);
     AddCircleColliderToEntity(rotund, game_context->world->colliders, rotund_text.width / 2, CLITERAL(Vector2){rotund_text.width / 2, rotund_text.height / 2}, true);
+    AddChaseBehaviourToEntity(rotund, game_context->world->chase_behaviours, player);
 
     rlImGuiSetup(true);
 
@@ -97,6 +102,7 @@ int main(void)
         player_velocity->y = player_movement.y;
 
         UpdateMovement(game_context->world->positions, game_context->world->velocities);
+        UpdateChaseBehaviours(game_context->world->positions, game_context->world->velocities, game_context->world->chase_behaviours);
         UpdateColliders(game_context->world->positions, game_context->world->colliders, game_context->world->tags);
         UpdateMapBounds(game_context->world->positions, game_context->world->colliders, CLITERAL(Vector2){game_context->game_width, game_context->game_height});
         if (game_context->world->should_draw_collision_bounds) {

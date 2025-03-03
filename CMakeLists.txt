@@ -53,6 +53,8 @@ add_executable(${PROJECT_NAME}
     src/ecs/physics/velocity_component.c
     src/ecs/physics/position_component.c
     src/ecs/physics/collider_component.c
+    src/ecs/ai/chase_behaviour_system.c
+    src/ecs/ai/chase_behaviour_component.c
 
     src/debug/debug.c
     src/debug/debug_entities.c
@@ -81,6 +83,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
     src/input
     src/ecs
     src/ecs/physics
+    src/ecs/ai
     src/debug
 )
 

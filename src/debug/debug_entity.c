@@ -3,7 +3,8 @@
 #include "raylib.h"
 #include "rlImGui.h"
 
-static void DrawPositionDebug(struct PositionComponent* position) {
+static void DrawPositionDebug(RenderTexture2D debug_layer, struct PositionComponent* position) {
+    BeginTextureMode(debug_layer);
     DrawLineEx(
         CLITERAL(Vector2){position->x - 8, position->y},
         CLITERAL(Vector2){position->x + 8, position->y},
@@ -14,6 +15,7 @@ static void DrawPositionDebug(struct PositionComponent* position) {
         CLITERAL(Vector2){position->x, position->y + 8},
         2.0f,
         MAGENTA);
+    EndTextureMode();
     igText("Position: (%.1f, %.1f)", position->x, position->y);
 }
 
@@ -29,19 +31,7 @@ static void DrawSpriteDebug(struct SpriteComponent* sprite) {
     }
 }
 
-static void DrawColliderDebug(struct PositionComponent* position, struct ColliderComponent* collider) {
-    if (collider->shape_type == COLLIDER_SHAPE_CIRCLE) {
-    DrawCircleLinesV(CLITERAL(Vector2){position->x + collider->offset.x, position->y + collider->offset.y}, collider->shape.circle.radius, ORANGE);
-    } else if (collider->shape_type == COLLIDER_SHAPE_RECTANGLE) {
-        DrawRectangleLines(
-            position->x + collider->offset.x - collider->shape.rectangle.width / 2,
-            position->y + collider->offset.y - collider->shape.rectangle.height / 2,
-            collider->shape.rectangle.width,
-            collider->shape.rectangle.height,
-            ORANGE
-        );
-    }
-
+static void DrawColliderDebug(struct ColliderComponent* collider) {
     igText("Collider shape_type: %s", collider->shape_type == COLLIDER_SHAPE_CIRCLE ? "Circle" : "Rectangle");
     if (collider->shape_type == COLLIDER_SHAPE_CIRCLE) {
         igText("Radius: %.1f", collider->shape.circle.radius);
@@ -63,7 +53,7 @@ void DrawEntityInspector(struct GameContext* game_context) {
 
     struct PositionComponent* position = GetPosition(game_context->world->positions, entity);
     if (position) {
-        DrawPositionDebug(position);
+        DrawPositionDebug(game_context->world->debug_layer, position);
     }
     struct VelocityComponent* velocity = GetVelocity(game_context->world->velocities, entity);
     if (velocity) {
@@ -71,11 +61,14 @@ void DrawEntityInspector(struct GameContext* game_context) {
     }
 
     if (position && velocity) {
+        BeginTextureMode(game_context->world->debug_layer);
         DrawLineEx(
             CLITERAL(Vector2){position->x, position->y},
             CLITERAL(Vector2){position->x + velocity->x * 10.0f, position->y + velocity->y * 10.0f},
             2.0f,
-            SKYBLUE);
+            SKYBLUE
+        );
+        EndTextureMode();
     }
     struct SpriteComponent* sprite = GetSprite(game_context->world->sprites, entity);
     if (sprite) {
@@ -84,7 +77,7 @@ void DrawEntityInspector(struct GameContext* game_context) {
 
     struct ColliderComponent* collider = GetCollider(game_context->world->colliders, entity);
     if (position && collider) {
-        DrawColliderDebug(position, collider);
+        DrawColliderDebug(collider);
     }
 
     igEnd();

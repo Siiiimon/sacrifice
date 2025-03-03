@@ -4,6 +4,70 @@
 #include "raylib.h"
 #include <stdlib.h>
 
+static bool RectOnRect(
+    struct PositionComponent* a_position,
+    struct ColliderComponent* a_collider,
+    struct PositionComponent* b_position,
+    struct ColliderComponent* b_collider
+) {
+    return CheckCollisionRecs(
+        CLITERAL(Rectangle) {
+            a_position->x,
+            a_position->y,
+            a_collider->shape.rectangle.width,
+            a_collider->shape.rectangle.height
+        },
+        CLITERAL(Rectangle) {
+            b_position->x,
+            b_position->y,
+            b_collider->shape.rectangle.width,
+            b_collider->shape.rectangle.height
+        }
+    );
+}
+
+static bool CircleOnRect(
+    struct PositionComponent* a_position,
+    struct ColliderComponent* a_collider,
+    struct PositionComponent* b_position,
+    struct ColliderComponent* b_collider
+) {
+    return CheckCollisionCircleRec(
+        CLITERAL(Vector2) {
+            a_position->x + a_collider->offset.x,
+            a_position->y + a_collider->offset.y
+        },
+        a_collider->shape.circle.radius,
+        CLITERAL(Rectangle) {
+            b_position->x,
+            b_position->y,
+            b_collider->shape.rectangle.width,
+            b_collider->shape.rectangle.height
+        }
+    );
+}
+
+static bool CircleOnCircle(
+    struct PositionComponent* a_position,
+    struct ColliderComponent* a_collider,
+    struct PositionComponent* b_position,
+    struct ColliderComponent* b_collider
+) {
+    return CheckCollisionCircles(
+        CLITERAL(Vector2) {
+            a_position->x + a_collider->offset.x,
+            a_position->y + a_collider->offset.y
+        },
+        a_collider->shape.circle.radius,
+        CLITERAL(Vector2) {
+            b_position->x + b_collider->offset.x,
+            b_position->y + b_collider->offset.y
+        },
+        b_collider->shape.circle.radius
+    );
+}
+
+
 void UpdateColliders(struct PositionComponentArray* positions, struct ColliderComponentArray* colliders) {
     for (unsigned int i = 0; i < MAX_ENTITIES; i++) {
         if (colliders->components[i] == NULL) {
@@ -31,23 +95,28 @@ void UpdateColliders(struct PositionComponentArray* positions, struct ColliderCo
             }
             struct PositionComponent* their_position = positions->components[j];
 
-            if (our_collider->shape_type == COLLIDER_SHAPE_RECTANGLE) {
-                if (their_collider->shape_type == COLLIDER_SHAPE_RECTANGLE) {
-                    our_collider->is_colliding = CheckCollisionRecs(
-                        CLITERAL(Rectangle) {
-                            our_position->x,
-                            our_position->y,
-                            our_collider->shape.rectangle.width,
-                            our_collider->shape.rectangle.height
-                        },
-                        CLITERAL(Rectangle) {
-                            their_position->x,
-                            their_position->y,
-                            their_collider->shape.rectangle.width,
-                            their_collider->shape.rectangle.height
-                        }
-                    );
-                }
+            bool collision_detected = false;
+
+            if (our_collider->shape_type == COLLIDER_SHAPE_RECTANGLE && their_collider->shape_type == COLLIDER_SHAPE_RECTANGLE) {
+                // our Rect on their Rect
+                collision_detected = RectOnRect(our_position, our_collider, their_position, their_collider);
+            }
+            if (our_collider->shape_type == COLLIDER_SHAPE_CIRCLE && their_collider->shape_type == COLLIDER_SHAPE_RECTANGLE) {
+                // our Circle on their Rect
+                collision_detected = CircleOnRect(our_position, our_collider, their_position, their_collider);
+            }
+            if (our_collider->shape_type == COLLIDER_SHAPE_RECTANGLE && their_collider->shape_type == COLLIDER_SHAPE_CIRCLE) {
+                // our Rect on their Circle
+                collision_detected = CircleOnRect(their_position, their_collider, our_position, our_collider);
+            }
+            if (our_collider->shape_type == COLLIDER_SHAPE_CIRCLE && their_collider->shape_type == COLLIDER_SHAPE_CIRCLE) {
+                // our Circle on their Circle
+                collision_detected = CircleOnCircle(our_position, our_collider, their_position, their_collider);
+            }
+
+            if (collision_detected) {
+                our_collider->is_colliding = true;
+                their_collider->is_colliding = true;
             }
         }
     }

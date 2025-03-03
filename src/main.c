@@ -19,6 +19,10 @@ struct GameContext* game_context = NULL;
 
 int main(void)
 {
+#ifdef DEBUG
+    SetTraceLogLevel(LOG_DEBUG);
+#endif
+
     SetConfigFlags(FLAG_MSAA_4X_HINT | FLAG_VSYNC_HINT);
 
     InitWindow(1280, 720, "Sacrifice");
@@ -29,6 +33,7 @@ int main(void)
 
     Texture cat = LoadTextureFromFile("assets/sprites/cat.png");
     Texture wall_text = LoadTextureFromFile("assets/sprites/wall.png");
+    Texture rotund_text = LoadTextureFromFile("assets/sprites/rotund_specimen.png");
 
     game_context->world = malloc(sizeof(struct World));
     game_context->world->entities = NewEntityManager();
@@ -37,21 +42,28 @@ int main(void)
     game_context->world->sprites = NewSpriteComponentArray();
     game_context->world->colliders = NewColliderComponentArray();
 
-    game_context->world->player_move_speed = 3.0f;
+    game_context->world->player_move_speed = 6.0f;
+
+    game_context->world->debug_layer = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
+    game_context->world->should_draw_collision_bounds = false;
 
     unsigned int player = NewEntity(game_context->world->entities);
     unsigned int wall = NewEntity(game_context->world->entities);
-    TraceLog(LOG_INFO, "player id: %u", player);
-    TraceLog(LOG_INFO, "wall id: %u", wall);
+    unsigned int rotund = NewEntity(game_context->world->entities);
 
     AddPositionToEntity(player, game_context->world->positions, game_context->game_width / 2, game_context->game_height / 2);
     AddVelocityToEntity(player, game_context->world->velocities, 0.0f, 0.0f);
     AddSpriteToEntity(player, game_context->world->sprites, cat);
     AddRectangleColliderToEntity(player, game_context->world->colliders, cat.width, cat.height, CLITERAL(Vector2){cat.width / 2, cat.height / 2});
+    // AddCircleColliderToEntity(player, game_context->world->colliders, cat.height / 2, CLITERAL(Vector2){cat.width / 2, cat.height / 2});
 
     AddPositionToEntity(wall, game_context->world->positions, 200, (game_context->game_height / 2) - 75);
     AddSpriteToEntity(wall, game_context->world->sprites, wall_text);
     AddRectangleColliderToEntity(wall, game_context->world->colliders, wall_text.width, wall_text.height, CLITERAL(Vector2){wall_text.width / 2, wall_text.height / 2});
+
+    AddPositionToEntity(rotund, game_context->world->positions, game_context->game_width - 300, game_context->game_height / 2);
+    AddSpriteToEntity(rotund, game_context->world->sprites, rotund_text);
+    AddCircleColliderToEntity(rotund, game_context->world->colliders, rotund_text.width / 2, CLITERAL(Vector2){rotund_text.width / 2, rotund_text.height / 2});
 
     rlImGuiSetup(true);
 
@@ -61,6 +73,12 @@ int main(void)
     SetTargetFPS(60);
 
     while (!WindowShouldClose()) {
+#ifdef DEBUG
+        BeginTextureMode(game_context->world->debug_layer);
+        ClearBackground(BLANK);
+        EndTextureMode();
+#endif
+
         Vector2 player_movement = Vector2Scale(GetMovementInput(), game_context->world->player_move_speed);
         struct VelocityComponent* player_velocity = GetVelocity(game_context->world->velocities, player);
 
@@ -69,6 +87,9 @@ int main(void)
 
         UpdateMovement(game_context->world->positions, game_context->world->velocities);
         UpdateColliders(game_context->world->positions, game_context->world->colliders);
+        if (game_context->world->should_draw_collision_bounds) {
+            DrawCollisionBounds(game_context->world->debug_layer, game_context->world->positions, game_context->world->colliders);
+        }
 
         BeginDrawing();
 
@@ -81,7 +102,15 @@ int main(void)
 
         DrawDebugUI(game_context);
 
+        DrawTextureRec(
+            game_context->world->debug_layer.texture,
+            CLITERAL(Rectangle){0, 0, GetScreenWidth(), -GetScreenHeight()},
+            CLITERAL(Vector2){0, 0},
+            WHITE
+        );
+
         rlImGuiEnd();
+
 #endif
 
         EndDrawing();

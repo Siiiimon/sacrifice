@@ -16,6 +16,8 @@ struct World {
     struct VelocityComponentArray* velocities;
     struct SpriteComponentArray* sprites;
     struct ColliderComponentArray* colliders;
+    struct HealthComponentArray* healths;
+    struct HarmComponentArray* harms;
     struct ChaseBehaviourComponentArray* chase_behaviours;
 
     float player_move_speed;

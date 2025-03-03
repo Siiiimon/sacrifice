@@ -3,6 +3,9 @@
 #include "raylib.h"
 #include "rlImGui.h"
 
+#include <harm_component.h>
+#include <health_component.h>
+
 static void DrawPositionDebug(RenderTexture2D debug_layer, struct PositionComponent* position) {
     BeginTextureMode(debug_layer);
     DrawLineEx(
@@ -80,6 +83,25 @@ void DrawEntityInspector(struct GameContext* game_context) {
     struct ColliderComponent* collider = GetCollider(game_context->world->colliders, entity);
     if (position && collider) {
         DrawColliderDebug(collider);
+    }
+
+    struct HealthComponent* health = GetHealth(game_context->world->healths, entity);
+    if (health) {
+        if (health->current_health <= 0) {
+            igText("entity is dead");
+        } else {
+            igText("%d out of %d health", health->current_health, health->max_health);
+        }
+        if (health->is_invincible) {
+            igText("invincible for %.1f", health->invincibility_duration - health->invincibility_timer);
+        } else {
+            igText("currently vulnerable");
+        }
+    }
+
+    struct HarmComponent* harm = GetHarm(game_context->world->harms, entity);
+    if (harm) {
+        igText("deals %d damage", harm->damage);
     }
 
     igEnd();

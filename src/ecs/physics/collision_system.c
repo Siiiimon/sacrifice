@@ -2,6 +2,7 @@
 #include "collider_component.h"
 #include "defs.h"
 #include "raylib.h"
+#include "tag_component.h"
 #include <stdlib.h>
 
 static bool RectOnRect(
@@ -68,7 +69,7 @@ static bool CircleOnCircle(
 }
 
 
-void UpdateColliders(struct PositionComponentArray* positions, struct ColliderComponentArray* colliders) {
+void UpdateColliders(struct PositionComponentArray* positions, struct ColliderComponentArray* colliders, struct TagComponentArray* tags) {
     for (unsigned int i = 0; i < MAX_ENTITIES; i++) {
         if (colliders->components[i] == NULL) {
             continue;
@@ -104,6 +105,41 @@ void UpdateColliders(struct PositionComponentArray* positions, struct ColliderCo
             if (our_collider->shape_type == COLLIDER_SHAPE_RECTANGLE && their_collider->shape_type == COLLIDER_SHAPE_RECTANGLE) {
                 // our Rect on their Rect
                 collision_detected = RectOnRect(our_position, our_collider, their_position, their_collider);
+
+                struct TagComponent* our_tag = tags->components[i];
+                if (our_tag && our_tag->tag == ENTITY_TAG_PLAYER) {
+                    struct TagComponent* their_tag = tags->components[j];
+                    if (their_tag && their_tag->tag == ENTITY_TAG_WALL) {
+                        Rectangle overlap = GetCollisionRec(
+                            CLITERAL(Rectangle){
+                                our_position->x,
+                                our_position->y,
+                                our_collider->shape.rectangle.width,
+                                our_collider->shape.rectangle.height
+                            },
+                            CLITERAL(Rectangle){
+                                their_position->x,
+                                their_position->y,
+                                their_collider->shape.rectangle.width,
+                                their_collider->shape.rectangle.height
+                            }
+                        );
+                        if (overlap.width < overlap.height) {
+                            if (our_position->x > their_position->x) {
+                                our_position->x += overlap.width;
+                            } else {
+                                our_position->x -= overlap.width;
+                            }
+                        } else {
+                            if (our_position->y > their_position->y) {
+                                our_position->y += overlap.height;
+                            } else {
+                                our_position->y -= overlap.height;
+                            }
+                        }
+
+                    }
+                }
             }
             if (our_collider->shape_type == COLLIDER_SHAPE_CIRCLE && their_collider->shape_type == COLLIDER_SHAPE_RECTANGLE) {
                 // our Circle on their Rect

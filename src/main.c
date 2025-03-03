@@ -10,6 +10,7 @@
 #include "raymath.h"
 #include "render/render_system.h"
 #include "render/sprite_component.h"
+#include "tag_component.h"
 #include "texture_io.h"
 #include "input.h"
 #include "velocity_component.h"
@@ -38,6 +39,7 @@ int main(void)
 
     game_context->world = malloc(sizeof(struct World));
     game_context->world->entities = NewEntityManager();
+    game_context->world->tags = NewTagComponentArray();
     game_context->world->positions = NewPositionComponentArray();
     game_context->world->velocities = NewVelocityComponentArray();
     game_context->world->sprites = NewSpriteComponentArray();
@@ -53,12 +55,14 @@ int main(void)
     // unsigned int wall_b = NewEntity(game_context->world->entities);
     unsigned int rotund = NewEntity(game_context->world->entities);
 
+    AddTagToEntity(player, game_context->world->tags, ENTITY_TAG_PLAYER);
     AddPositionToEntity(player, game_context->world->positions, game_context->game_width / 2, game_context->game_height / 2);
     AddVelocityToEntity(player, game_context->world->velocities, 0.0f, 0.0f);
     AddSpriteToEntity(player, game_context->world->sprites, cat);
     AddRectangleColliderToEntity(player, game_context->world->colliders, cat.width, cat.height, CLITERAL(Vector2){cat.width / 2, cat.height / 2}, true);
     // AddCircleColliderToEntity(player, game_context->world->colliders, cat.height / 2, CLITERAL(Vector2){cat.width / 2, cat.height / 2});
 
+    AddTagToEntity(wall_a, game_context->world->tags, ENTITY_TAG_WALL);
     AddPositionToEntity(wall_a, game_context->world->positions, 200, (game_context->game_height / 2) - 75);
     AddSpriteToEntity(wall_a, game_context->world->sprites, wall_text);
     AddRectangleColliderToEntity(wall_a, game_context->world->colliders, wall_text.width, wall_text.height, CLITERAL(Vector2){wall_text.width / 2, wall_text.height / 2}, true);
@@ -67,6 +71,7 @@ int main(void)
     // AddSpriteToEntity(wall_b, game_context->world->sprites, wall_text);
     // AddRectangleColliderToEntity(wall_b, game_context->world->colliders, wall_text.width, wall_text.height, CLITERAL(Vector2){wall_text.width / 2, wall_text.height / 2}, true);
 
+    AddTagToEntity(rotund, game_context->world->tags, ENTITY_TAG_PROJECTILE);
     AddPositionToEntity(rotund, game_context->world->positions, game_context->game_width - 300, game_context->game_height / 2);
     AddSpriteToEntity(rotund, game_context->world->sprites, rotund_text);
     AddCircleColliderToEntity(rotund, game_context->world->colliders, rotund_text.width / 2, CLITERAL(Vector2){rotund_text.width / 2, rotund_text.height / 2}, true);

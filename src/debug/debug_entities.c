@@ -1,6 +1,7 @@
 #include "debug_entities.h"
 #include "cimgui_include.h"
 #include "debug_entity.h"
+#include "tag_component.h"
 #include <stdlib.h>
 
 void DrawEntitiesDebugUI(struct GameContext* game_context) {
@@ -24,7 +25,7 @@ void DrawEntitiesDebugUI(struct GameContext* game_context) {
             ImGuiTableFlags_BordersV;
         if (igBeginTable("entities_table", 3, table_flags, (ImVec2){.x = 300.0f, .y = 100.0f}, 0.0f)) {
             igTableSetupColumn("ID", ImGuiTableColumnFlags_None, 5.0f, 0);
-            igTableSetupColumn("Name", ImGuiTableColumnFlags_None, 15.0f, 1);
+            igTableSetupColumn("Tag", ImGuiTableColumnFlags_None, 15.0f, 1);
             igTableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 0.0f, 2);
 
             igTableHeadersRow();
@@ -34,7 +35,12 @@ void DrawEntitiesDebugUI(struct GameContext* game_context) {
                 igTableNextColumn();
                 igText("%u", entity);
                 igTableNextColumn();
-                igText("Entity");
+                struct TagComponent* tag = GetTag(game_context->world->tags, entity);
+                if (!tag) {
+                    igText("None");
+                } else {
+                    igText("%s", GetTagName(tag->tag));
+                }
                 igTableNextColumn();
                 igPushID_Int(i);
                 if (igSmallButton("i")) {

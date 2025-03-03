@@ -6,6 +6,8 @@ void UpdateMovement(struct PositionComponentArray* positions, struct VelocityCom
         struct PositionComponent* position = positions->components[i];
         struct VelocityComponent* velocity = velocities->components[i];
         if (position == NULL || velocity == NULL) continue;
+        // TODO: when reworking physics movement, build vector and normalize it
+        // otherwise moving diagonally will be faster than moving straight
         position->x += velocity->x;
         position->y += velocity->y;
     }

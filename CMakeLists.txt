@@ -48,6 +48,7 @@ add_executable(${PROJECT_NAME}
     src/ecs/render/sprite_component.c
     src/ecs/physics/movement_system.c
     src/ecs/physics/collision_system.c
+    src/ecs/physics/map_bounds_system.c
     src/ecs/physics/velocity_component.c
     src/ecs/physics/position_component.c
     src/ecs/physics/collider_component.c

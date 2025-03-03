@@ -19,7 +19,7 @@ struct ColliderComponent {
     bool is_colliding;
     // int layer;
     // unsigned int mask;
-    // bool is_bound_to_map;
+    bool is_bound_to_map;
 
     union {
         struct {
@@ -36,8 +36,8 @@ struct ColliderComponent {
 struct ColliderComponentArray* NewColliderComponentArray(void);
 void FreeColliderComponentArray(struct ColliderComponentArray* colliders);
 
-void AddRectangleColliderToEntity(unsigned int entity, struct ColliderComponentArray* colliders, float width, float height, Vector2 offset);
-void AddCircleColliderToEntity(unsigned int entity, struct ColliderComponentArray* colliders, float radius, Vector2 offset);
+void AddRectangleColliderToEntity(unsigned int entity, struct ColliderComponentArray* colliders, float width, float height, Vector2 offset, bool is_bound_to_map);
+void AddCircleColliderToEntity(unsigned int entity, struct ColliderComponentArray* colliders, float radius, Vector2 offset, bool is_bound_to_map);
 struct ColliderComponent* GetCollider(struct ColliderComponentArray* colliders, unsigned int entity);
 void FreeCollider(struct ColliderComponent* collider);
 

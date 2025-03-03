@@ -6,6 +6,7 @@
 #include "ecs/physics/movement_system.h"
 #include "ecs/physics/collider_component.h"
 #include "ecs/physics/collision_system.h"
+#include "ecs/physics/map_bounds_system.h"
 #include "raymath.h"
 #include "render/render_system.h"
 #include "render/sprite_component.h"
@@ -54,16 +55,16 @@ int main(void)
     AddPositionToEntity(player, game_context->world->positions, game_context->game_width / 2, game_context->game_height / 2);
     AddVelocityToEntity(player, game_context->world->velocities, 0.0f, 0.0f);
     AddSpriteToEntity(player, game_context->world->sprites, cat);
-    AddRectangleColliderToEntity(player, game_context->world->colliders, cat.width, cat.height, CLITERAL(Vector2){cat.width / 2, cat.height / 2});
+    AddRectangleColliderToEntity(player, game_context->world->colliders, cat.width, cat.height, CLITERAL(Vector2){cat.width / 2, cat.height / 2}, true);
     // AddCircleColliderToEntity(player, game_context->world->colliders, cat.height / 2, CLITERAL(Vector2){cat.width / 2, cat.height / 2});
 
     AddPositionToEntity(wall, game_context->world->positions, 200, (game_context->game_height / 2) - 75);
     AddSpriteToEntity(wall, game_context->world->sprites, wall_text);
-    AddRectangleColliderToEntity(wall, game_context->world->colliders, wall_text.width, wall_text.height, CLITERAL(Vector2){wall_text.width / 2, wall_text.height / 2});
+    AddRectangleColliderToEntity(wall, game_context->world->colliders, wall_text.width, wall_text.height, CLITERAL(Vector2){wall_text.width / 2, wall_text.height / 2}, true);
 
     AddPositionToEntity(rotund, game_context->world->positions, game_context->game_width - 300, game_context->game_height / 2);
     AddSpriteToEntity(rotund, game_context->world->sprites, rotund_text);
-    AddCircleColliderToEntity(rotund, game_context->world->colliders, rotund_text.width / 2, CLITERAL(Vector2){rotund_text.width / 2, rotund_text.height / 2});
+    AddCircleColliderToEntity(rotund, game_context->world->colliders, rotund_text.width / 2, CLITERAL(Vector2){rotund_text.width / 2, rotund_text.height / 2}, true);
 
     rlImGuiSetup(true);
 
@@ -87,6 +88,7 @@ int main(void)
 
         UpdateMovement(game_context->world->positions, game_context->world->velocities);
         UpdateColliders(game_context->world->positions, game_context->world->colliders);
+        UpdateMapBounds(game_context->world->positions, game_context->world->colliders, CLITERAL(Vector2){game_context->game_width, game_context->game_height});
         if (game_context->world->should_draw_collision_bounds) {
             DrawCollisionBounds(game_context->world->debug_layer, game_context->world->positions, game_context->world->colliders);
         }

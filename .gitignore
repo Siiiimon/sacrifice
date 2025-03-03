@@ -2,3 +2,5 @@ build/
 .cache/
 **/.DS_Store
 imgui.ini
+.idea
+cmake-build-debug

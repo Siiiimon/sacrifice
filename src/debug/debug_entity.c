@@ -40,7 +40,9 @@ static void DrawColliderDebug(struct ColliderComponent* collider) {
         igText("Height: %.1f", collider->shape.rectangle.height);
     }
     igText("Offset: (%.1f, %.1f)", collider->offset.x, collider->offset.y);
-    igText("is %s", collider->is_colliding ? "Colliding" : "Not Colliding");
+    for (int i = 0; i < collider->colliding_count; i++) {
+        igText("Colliding with Entity %d", collider->colliding_with[i]);
+    }
 }
 
 void DrawEntityInspector(struct GameContext* game_context) {

@@ -16,7 +16,8 @@ enum ColliderShape {
 struct ColliderComponent {
     enum ColliderShape shape_type;
     Vector2 offset;
-    bool is_colliding;
+    short colliding_count;
+    unsigned int colliding_with[MAX_COLLISIONS];
     // int layer;
     // unsigned int mask;
     bool is_bound_to_map;

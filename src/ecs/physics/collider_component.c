@@ -42,6 +42,10 @@ void AddRectangleColliderToEntity(unsigned int entity, struct ColliderComponentA
     }
 
     collider->offset = offset;
+    collider->colliding_count = 0;
+    for (unsigned int i = 0; i < MAX_COLLISIONS; i++) {
+        collider->colliding_with[i] = 0;
+    }
     collider->is_bound_to_map = is_bound_to_map;
     collider->shape_type = COLLIDER_SHAPE_RECTANGLE;
     collider->shape.rectangle.width = width;
@@ -68,6 +72,10 @@ void AddCircleColliderToEntity(unsigned int entity, struct ColliderComponentArra
     }
 
     collider->offset = offset;
+    collider->colliding_count = 0;
+    for (unsigned int i = 0; i < MAX_COLLISIONS; i++) {
+        collider->colliding_with[i] = 0;
+    }
     collider->is_bound_to_map = is_bound_to_map;
     collider->shape_type = COLLIDER_SHAPE_CIRCLE;
     collider->shape.circle.radius = radius;

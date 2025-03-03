@@ -49,7 +49,8 @@ int main(void)
     game_context->world->should_draw_collision_bounds = false;
 
     unsigned int player = NewEntity(game_context->world->entities);
-    unsigned int wall = NewEntity(game_context->world->entities);
+    unsigned int wall_a = NewEntity(game_context->world->entities);
+    // unsigned int wall_b = NewEntity(game_context->world->entities);
     unsigned int rotund = NewEntity(game_context->world->entities);
 
     AddPositionToEntity(player, game_context->world->positions, game_context->game_width / 2, game_context->game_height / 2);
@@ -58,9 +59,13 @@ int main(void)
     AddRectangleColliderToEntity(player, game_context->world->colliders, cat.width, cat.height, CLITERAL(Vector2){cat.width / 2, cat.height / 2}, true);
     // AddCircleColliderToEntity(player, game_context->world->colliders, cat.height / 2, CLITERAL(Vector2){cat.width / 2, cat.height / 2});
 
-    AddPositionToEntity(wall, game_context->world->positions, 200, (game_context->game_height / 2) - 75);
-    AddSpriteToEntity(wall, game_context->world->sprites, wall_text);
-    AddRectangleColliderToEntity(wall, game_context->world->colliders, wall_text.width, wall_text.height, CLITERAL(Vector2){wall_text.width / 2, wall_text.height / 2}, true);
+    AddPositionToEntity(wall_a, game_context->world->positions, 200, (game_context->game_height / 2) - 75);
+    AddSpriteToEntity(wall_a, game_context->world->sprites, wall_text);
+    AddRectangleColliderToEntity(wall_a, game_context->world->colliders, wall_text.width, wall_text.height, CLITERAL(Vector2){wall_text.width / 2, wall_text.height / 2}, true);
+
+    // AddPositionToEntity(wall_b, game_context->world->positions, 200, (game_context->game_height / 2) + 25);
+    // AddSpriteToEntity(wall_b, game_context->world->sprites, wall_text);
+    // AddRectangleColliderToEntity(wall_b, game_context->world->colliders, wall_text.width, wall_text.height, CLITERAL(Vector2){wall_text.width / 2, wall_text.height / 2}, true);
 
     AddPositionToEntity(rotund, game_context->world->positions, game_context->game_width - 300, game_context->game_height / 2);
     AddSpriteToEntity(rotund, game_context->world->sprites, rotund_text);

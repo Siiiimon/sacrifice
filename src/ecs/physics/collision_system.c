@@ -81,7 +81,11 @@ void UpdateColliders(struct PositionComponentArray* positions, struct ColliderCo
         }
         struct PositionComponent* our_position = positions->components[i];
 
-        our_collider->is_colliding = false;
+
+        our_collider->colliding_count = 0;
+        for (unsigned int i = 0; i < MAX_COLLISIONS; i++) {
+            our_collider->colliding_with[i] = 0;
+        }
 
         for (unsigned int j = 0; j < MAX_ENTITIES; j++) {
             if (i == j || colliders->components[j] == NULL || positions->components[j] == NULL) {
@@ -115,8 +119,8 @@ void UpdateColliders(struct PositionComponentArray* positions, struct ColliderCo
             }
 
             if (collision_detected) {
-                our_collider->is_colliding = true;
-                their_collider->is_colliding = true;
+                our_collider->colliding_with[our_collider->colliding_count] = j;
+                our_collider->colliding_count++;
             }
         }
     }

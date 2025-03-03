@@ -4,6 +4,7 @@
 #include "ecs/entity_manager.h"
 #include "ecs/physics/position_component.h"
 #include "ecs/physics/velocity_component.h"
+#include "ecs/physics/collider_component.h"
 #include "ecs/render/sprite_component.h"
 
 struct World {
@@ -11,6 +12,7 @@ struct World {
     struct PositionComponentArray* positions;
     struct VelocityComponentArray* velocities;
     struct SpriteComponentArray* sprites;
+    struct ColliderComponentArray* colliders;
 
     float player_move_speed;
 };

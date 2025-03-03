@@ -29,6 +29,30 @@ static void DrawSpriteDebug(struct SpriteComponent* sprite) {
     }
 }
 
+static void DrawColliderDebug(struct PositionComponent* position, struct ColliderComponent* collider) {
+    if (collider->shape_type == COLLIDER_SHAPE_CIRCLE) {
+    DrawCircleLinesV(CLITERAL(Vector2){position->x + collider->offset.x, position->y + collider->offset.y}, collider->shape.circle.radius, ORANGE);
+    } else if (collider->shape_type == COLLIDER_SHAPE_RECTANGLE) {
+        DrawRectangleLines(
+            position->x + collider->offset.x - collider->shape.rectangle.width / 2,
+            position->y + collider->offset.y - collider->shape.rectangle.height / 2,
+            collider->shape.rectangle.width,
+            collider->shape.rectangle.height,
+            ORANGE
+        );
+    }
+
+    igText("Collider shape_type: %s", collider->shape_type == COLLIDER_SHAPE_CIRCLE ? "Circle" : "Rectangle");
+    if (collider->shape_type == COLLIDER_SHAPE_CIRCLE) {
+        igText("Radius: %.1f", collider->shape.circle.radius);
+    } else if (collider->shape_type == COLLIDER_SHAPE_RECTANGLE) {
+        igText("Width: %.1f", collider->shape.rectangle.width);
+        igText("Height: %.1f", collider->shape.rectangle.height);
+    }
+    igText("Offset: (%.1f, %.1f)", collider->offset.x, collider->offset.y);
+    igText("is %s", collider->is_colliding ? "Colliding" : "Not Colliding");
+}
+
 void DrawEntityInspector(struct GameContext* game_context) {
     unsigned int entity = game_context->currently_inspected_entity_id;
     if (entity == 0) {
@@ -56,6 +80,11 @@ void DrawEntityInspector(struct GameContext* game_context) {
     struct SpriteComponent* sprite = GetSprite(game_context->world->sprites, entity);
     if (sprite) {
         DrawSpriteDebug(sprite);
+    }
+
+    struct ColliderComponent* collider = GetCollider(game_context->world->colliders, entity);
+    if (position && collider) {
+        DrawColliderDebug(position, collider);
     }
 
     igEnd();

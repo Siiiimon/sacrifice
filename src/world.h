@@ -6,9 +6,11 @@
 #include "ecs/physics/velocity_component.h"
 #include "ecs/physics/collider_component.h"
 #include "ecs/render/sprite_component.h"
+#include "tag_component.h"
 
 struct World {
     struct EntityManager* entities;
+    struct TagComponentArray* tags;
     struct PositionComponentArray* positions;
     struct VelocityComponentArray* velocities;
     struct SpriteComponentArray* sprites;

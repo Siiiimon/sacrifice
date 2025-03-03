@@ -44,6 +44,7 @@ add_executable(${PROJECT_NAME}
     src/input/input.c
 
     src/ecs/entity_manager.c
+    src/ecs/tag_component.c
     src/ecs/render/render_system.c
     src/ecs/render/sprite_component.c
     src/ecs/physics/movement_system.c

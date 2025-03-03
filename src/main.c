@@ -97,7 +97,7 @@ int main(void)
         player_velocity->y = player_movement.y;
 
         UpdateMovement(game_context->world->positions, game_context->world->velocities);
-        UpdateColliders(game_context->world->positions, game_context->world->colliders);
+        UpdateColliders(game_context->world->positions, game_context->world->colliders, game_context->world->tags);
         UpdateMapBounds(game_context->world->positions, game_context->world->colliders, CLITERAL(Vector2){game_context->game_width, game_context->game_height});
         if (game_context->world->should_draw_collision_bounds) {
             DrawCollisionBounds(game_context->world->debug_layer, game_context->world->positions, game_context->world->colliders);

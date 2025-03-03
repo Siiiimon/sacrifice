@@ -15,6 +15,9 @@ struct World {
     struct ColliderComponentArray* colliders;
 
     float player_move_speed;
+
+    RenderTexture2D debug_layer;
+    bool should_draw_collision_bounds;
 };
 
 #endif

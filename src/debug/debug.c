@@ -3,6 +3,8 @@
 #include "debug_entities.h"
 #include "raylib.h"
 
+#include <debug_data.h>
+
 void DrawCollisionBounds(RenderTexture2D debug_layer, struct PositionComponentArray* positions, struct ColliderComponentArray* colliders) {
     BeginTextureMode(debug_layer);
     for (unsigned int i = 0; i < MAX_ENTITIES; i++) {
@@ -56,26 +58,37 @@ void DrawCollisionBounds(RenderTexture2D debug_layer, struct PositionComponentAr
 }
 
 void DrawDebugUI(struct GameContext *game_context) {
-    igBegin("Debug", NULL, 0);
-    if (igCollapsingHeader_TreeNodeFlags("Performance", ImGuiTreeNodeFlags_DefaultOpen)) {
-        igText("FPS: %d", GetFPS());
+    igBeginMainMenuBar();
+    if (igBeginMenu("Windows", true)) {
+        igMenuItem_BoolPtr("Main Window", NULL, &game_context->debug_data->show_main_window, true);
+        igMenuItem_BoolPtr("Entities", NULL, &game_context->debug_data->show_entities_window, true);
+        igMenuItem_BoolPtr("Entity Inspector", NULL, &game_context->debug_data->show_entity_inspector_window, true);
+        igEndMenu();
     }
-    if (igCollapsingHeader_TreeNodeFlags("System", ImGuiTreeNodeFlags_DefaultOpen)) {
-        igText("DPI scale: %f", GetWindowScaleDPI().x);
-        igText("Platform: %s",
-        #if defined(_WIN32)
-            "Windows"
-        #elif defined(__APPLE__)
-            "macOS"
-        #elif defined(__linux__)
-            "Linux"
-        #else
-            "Unknown"
-        #endif
-        );
-    }
-    igCheckbox("Draw Collision Bounds", &game_context->world->should_draw_collision_bounds);
-    igEnd();
+    igEndMainMenuBar();
 
+    if (game_context->debug_data->show_main_window && igBegin("Debug", &game_context->debug_data->show_main_window, 0)) {
+        if (igCollapsingHeader_TreeNodeFlags("Performance", ImGuiTreeNodeFlags_DefaultOpen)) {
+            igText("FPS: %d", GetFPS());
+        }
+        if (igCollapsingHeader_TreeNodeFlags("System", ImGuiTreeNodeFlags_DefaultOpen)) {
+            igText("DPI scale: %.1f", GetWindowScaleDPI().x);
+            igText("Platform: %s",
+            #if defined(_WIN32)
+                "Windows"
+            #elif defined(__APPLE__)
+                "macOS"
+            #elif defined(__linux__)
+                "Linux"
+            #else
+                "Unknown"
+            #endif
+            );
+        }
+        igCheckbox("Draw Collision Bounds", &game_context->world->should_draw_collision_bounds);
+        igEnd();
+    }
     DrawEntitiesDebugUI(game_context);
+
+    igShowDemoWindow(NULL);
 }

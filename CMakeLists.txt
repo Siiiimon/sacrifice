@@ -60,6 +60,7 @@ add_executable(${PROJECT_NAME}
     src/ecs/combat/health_component.c
 
     src/debug/debug.c
+    src/debug/debug_data.c
     src/debug/debug_entities.c
     src/debug/debug_entity.c
 )

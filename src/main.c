@@ -19,6 +19,7 @@
 
 #include <chase_behaviour_system.h>
 #include <combat_system.h>
+#include <debug_data.h>
 #include <harm_component.h>
 #include <health_component.h>
 
@@ -37,6 +38,8 @@ int main(void)
     game_context = malloc(sizeof(struct GameContext));
     game_context->game_width = 1280;
     game_context->game_height = 720;
+
+    game_context->debug_data = NewDebugData();
 
     Texture cat = LoadTextureFromFile("assets/sprites/cat.png");
     Texture wall_text = LoadTextureFromFile("assets/sprites/wall.png");
@@ -67,9 +70,9 @@ int main(void)
     AddPositionToEntity(player, game_context->world->positions, game_context->game_width / 2, game_context->game_height / 2);
     AddVelocityToEntity(player, game_context->world->velocities, 0.0f, 0.0f);
     AddSpriteToEntity(player, game_context->world->sprites, cat);
+    // AddCircleColliderToEntity(player, game_context->world->colliders, cat.height / 2, CLITERAL(Vector2){cat.width / 2, cat.height / 2}, true);
     AddRectangleColliderToEntity(player, game_context->world->colliders, cat.width, cat.height, CLITERAL(Vector2){cat.width / 2, cat.height / 2}, true);
     AddHealthToEntity(player, game_context->world->healths, 100);
-    // AddCircleColliderToEntity(player, game_context->world->colliders, cat.height / 2, CLITERAL(Vector2){cat.width / 2, cat.height / 2});
 
     AddTagToEntity(wall_a, game_context->world->tags, ENTITY_TAG_WALL);
     AddPositionToEntity(wall_a, game_context->world->positions, 200, (game_context->game_height / 2) - 75);

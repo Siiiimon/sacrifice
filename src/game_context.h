@@ -9,7 +9,7 @@ struct GameContext {
     int game_height;
 
 #ifdef DEBUG
-    unsigned int currently_inspected_entity_id;
+    struct DebugData* debug_data;
 #endif
 };
 

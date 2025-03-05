@@ -47,7 +47,6 @@ int main(void)
 
     game_context->world = malloc(sizeof(struct World));
     game_context->world->ecs = NewECS();
-    game_context->world->sprites = NewSpriteComponentArray();
     game_context->world->colliders = NewColliderComponentArray();
     game_context->world->healths = NewHealthComponentArray();
     game_context->world->harms = NewHarmComponentArray();
@@ -81,7 +80,12 @@ int main(void)
         NewVelocity(0.0f, 0.0f),
         COMPONENT_TYPE_VELOCITY
     );
-    AddSpriteToEntity(player, game_context->world->sprites, cat);
+    AttachComponentToEntity(
+        game_context->world->ecs,
+        player,
+        NewSprite(cat),
+        COMPONENT_TYPE_SPRITE
+    );
     // AddCircleColliderToEntity(player, game_context->world->colliders, cat.height / 2, CLITERAL(Vector2){cat.width / 2, cat.height / 2}, true);
     AddRectangleColliderToEntity(player, game_context->world->colliders, cat.width, cat.height, CLITERAL(Vector2){cat.width / 2, cat.height / 2}, true);
     AddHealthToEntity(player, game_context->world->healths, 100);
@@ -98,7 +102,12 @@ int main(void)
         NewPosition(200, (game_context->game_height / 2) - 75),
         COMPONENT_TYPE_POSITION
     );
-    AddSpriteToEntity(wall_a, game_context->world->sprites, wall_text);
+    AttachComponentToEntity(
+        game_context->world->ecs,
+        wall_a,
+        NewSprite(wall_text),
+        COMPONENT_TYPE_SPRITE
+    );
     AddRectangleColliderToEntity(wall_a, game_context->world->colliders, wall_text.width, wall_text.height, CLITERAL(Vector2){wall_text.width / 2, wall_text.height / 2}, true);
 
     // AddPositionToEntity(wall_b, game_context->world->positions, 200, (game_context->game_height / 2) + 25);
@@ -123,7 +132,12 @@ int main(void)
         NewVelocity(0.0f, 0.0f),
         COMPONENT_TYPE_VELOCITY
     );
-    AddSpriteToEntity(rotund, game_context->world->sprites, rotund_text);
+    AttachComponentToEntity(
+        game_context->world->ecs,
+        rotund,
+        NewSprite(rotund_text),
+        COMPONENT_TYPE_SPRITE
+    );
     AddCircleColliderToEntity(rotund, game_context->world->colliders, rotund_text.width / 2, CLITERAL(Vector2){rotund_text.width / 2, rotund_text.height / 2}, true);
     AddChaseBehaviourToEntity(rotund, game_context->world->chase_behaviours, player);
     AddHarmToEntity(rotund, game_context->world->harms, 10);
@@ -169,7 +183,7 @@ int main(void)
 
         ClearBackground(DARKGRAY);
 
-        RenderSprites(game_context->world->sprites, game_context->world->ecs->position_component_array);
+        RenderSprites(game_context->world->ecs->sprite_component_array, game_context->world->ecs->position_component_array);
 
         // manually drawing player health bar for now
         DrawRectangleLinesEx(

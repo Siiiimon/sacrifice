@@ -1,8 +1,12 @@
 #include "render_system.h"
 
-void RenderSprites(struct SpriteComponentArray* sprites, struct PositionComponent* positions[MAX_ENTITIES]) {
+#include "sprite_component.h"
+
+#include <raylib.h>
+
+void RenderSprites(struct SpriteComponent* sprites[MAX_ENTITIES], struct PositionComponent* positions[MAX_ENTITIES]) {
     for (int i = 0; i < MAX_ENTITIES; i++) {
-        struct SpriteComponent* sprite = sprites->components[i];
+        struct SpriteComponent* sprite = sprites[i];
         struct PositionComponent* position = positions[i];
         if (sprite && position) {
             DrawTexture(sprite->texture, position->x, position->y, WHITE);

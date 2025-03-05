@@ -47,7 +47,6 @@ int main(void)
 
     game_context->world = malloc(sizeof(struct World));
     game_context->world->ecs = NewECS();
-    game_context->world->chase_behaviours = NewChaseBehaviourComponentArray();
 
     game_context->world->player_move_speed = 6.0f;
 
@@ -161,7 +160,12 @@ int main(void)
         NewHarm(10),
         COMPONENT_TYPE_HARM
     );
-    AddChaseBehaviourToEntity(rotund, game_context->world->chase_behaviours, player);
+    AttachComponentToEntity(
+        game_context->world->ecs,
+        rotund,
+        NewChaseBehaviour(player),
+        COMPONENT_TYPE_CHASE_BEHAVIOUR
+    );
 
     struct VelocityComponent* player_velocity = GetComponentOfEntity(
         game_context->world->ecs,
@@ -196,7 +200,7 @@ int main(void)
         }
 
         UpdateMovement(game_context->world->ecs->position_component_array, game_context->world->ecs->velocity_component_array);
-        UpdateChaseBehaviours(game_context->world->ecs->position_component_array, game_context->world->ecs->velocity_component_array, game_context->world->chase_behaviours);
+        UpdateChaseBehaviours(game_context->world->ecs->position_component_array, game_context->world->ecs->velocity_component_array, game_context->world->ecs->chase_behaviour_component_array);
         UpdateColliders(game_context->world->ecs->position_component_array, game_context->world->ecs->collider_component_array, game_context->world->ecs->tag_component_array);
         UpdateMapBounds(game_context->world->ecs->position_component_array, game_context->world->ecs->collider_component_array, CLITERAL(Vector2){game_context->game_width, game_context->game_height});
         if (game_context->world->should_draw_collision_bounds) {

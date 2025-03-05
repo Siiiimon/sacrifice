@@ -20,6 +20,7 @@ struct ECS* NewECS(void) {
     memset(manager->collider_component_array, 0, sizeof(struct ColliderComponent*) * MAX_ENTITIES);
     memset(manager->health_component_array, 0, sizeof(struct HealthComponent*) * MAX_ENTITIES);
     memset(manager->harm_component_array, 0, sizeof(struct HarmComponent*) * MAX_ENTITIES);
+    memset(manager->chase_behaviour_component_array, 0, sizeof(struct ChaseBehaviourComponent*) * MAX_ENTITIES);
 
     return manager;
 }
@@ -50,6 +51,8 @@ void AttachComponentToEntity(struct ECS* ecs, Entity entity, void* component, en
         ecs->health_component_array[entity] = (struct HealthComponent*)component;
     case COMPONENT_TYPE_HARM:
         ecs->harm_component_array[entity] = (struct HarmComponent*)component;
+    case COMPONENT_TYPE_CHASE_BEHAVIOUR:
+        ecs->chase_behaviour_component_array[entity] = (struct ChaseBehaviourComponent*)component;
     default:
         TraceLog(LOG_ERROR, "Failed to attach component to %u, but it's an unknown component type");
     }
@@ -76,6 +79,8 @@ void* GetComponentOfEntity(struct ECS* ecs, Entity entity, enum ComponentType co
         return ecs->health_component_array[entity];
     case COMPONENT_TYPE_HARM:
         return ecs->harm_component_array[entity];
+    case COMPONENT_TYPE_CHASE_BEHAVIOUR:
+        return ecs->chase_behaviour_component_array[entity];
     default:
         TraceLog(LOG_ERROR, "Failed to get component of %u, but it's an unknown component type");
     }

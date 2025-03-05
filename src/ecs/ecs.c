@@ -16,6 +16,7 @@ struct ECS* NewECS(void) {
     memset(manager->tag_component_array, 0, sizeof(struct TagComponent*) * MAX_ENTITIES);
     memset(manager->position_component_array, 0, sizeof(struct PositionComponent*) * MAX_ENTITIES);
     memset(manager->velocity_component_array, 0, sizeof(struct VelocityComponent*) * MAX_ENTITIES);
+    memset(manager->sprite_component_array, 0, sizeof(struct SpriteComponent*) * MAX_ENTITIES);
 
     return manager;
 }
@@ -38,6 +39,8 @@ void AttachComponentToEntity(struct ECS* ecs, Entity entity, void* component, en
         break;
     case COMPONENT_TYPE_VELOCITY:
         ecs->velocity_component_array[entity] = (struct VelocityComponent*)component;
+    case COMPONENT_TYPE_SPRITE:
+        ecs->sprite_component_array[entity] = (struct SpriteComponent*)component;
     default:
         TraceLog(LOG_ERROR, "Failed to attach component to %u, but it's an unknown component type");
     }
@@ -56,6 +59,8 @@ void* GetComponentOfEntity(struct ECS* ecs, Entity entity, enum ComponentType co
         return ecs->position_component_array[entity];
     case COMPONENT_TYPE_VELOCITY:
         return ecs->velocity_component_array[entity];
+    case COMPONENT_TYPE_SPRITE:
+        return ecs->sprite_component_array[entity];
     default:
         TraceLog(LOG_ERROR, "Failed to get component of %u, but it's an unknown component type");
     }

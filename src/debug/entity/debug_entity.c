@@ -75,7 +75,11 @@ void DrawEntityInspector(struct GameContext* game_context) {
             );
             EndTextureMode();
         }
-        struct SpriteComponent* sprite = GetSprite(game_context->world->sprites, entity);
+        struct SpriteComponent* sprite = GetComponentOfEntity(
+            game_context->world->ecs,
+            entity,
+            COMPONENT_TYPE_SPRITE
+        );
         if (sprite) {
             DrawSpriteDebug(sprite);
         }

@@ -11,13 +11,6 @@
 
 struct World {
     struct ECS* ecs;
-    struct TagComponentArray* tags;
-    struct VelocityComponentArray* velocities;
-    struct SpriteComponentArray* sprites;
-    struct ColliderComponentArray* colliders;
-    struct HealthComponentArray* healths;
-    struct HarmComponentArray* harms;
-    struct ChaseBehaviourComponentArray* chase_behaviours;
 
     float player_move_speed;
 

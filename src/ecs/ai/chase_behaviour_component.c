@@ -4,56 +4,15 @@
 #include <ecs.h>
 #include <stdlib.h>
 
-struct ChaseBehaviourComponentArray* NewChaseBehaviourComponentArray(void) {
-    struct ChaseBehaviourComponentArray* chase_behaviours = malloc(sizeof(struct ChaseBehaviourComponentArray));
-    if (!chase_behaviours) {
-        TraceLog(LOG_ERROR, "failed to allocate memory for ChaseBehaviourComponentArray");
-        return NULL;
-    }
-
-    for (Entity i = 0; i < MAX_ENTITIES; i++) {
-        chase_behaviours->components[i] = NULL;
-    }
-
-    return chase_behaviours;
-}
-
-void FreeChaseBehaviourComponentArray(struct ChaseBehaviourComponentArray* chase_behaviours) {
-    if (!chase_behaviours) return;
-    for (int i = 0; i < MAX_ENTITIES; i++) {
-        FreeChaseBehaviour(chase_behaviours->components[i]);
-    }
-    free(chase_behaviours);
-}
-
-void AddChaseBehaviourToEntity(Entity entity, struct ChaseBehaviourComponentArray* chase_behaviours, Entity target) {
-    if (!chase_behaviours) return;
-    if (entity >= MAX_ENTITIES) {
-        TraceLog(LOG_ERROR, "entity index out of bounds");
-        return;
-    }
-
-    struct ChaseBehaviourComponent* component = malloc(sizeof(struct ChaseBehaviourComponent));
-    if (!component) {
+struct ChaseBehaviourComponent* NewChaseBehaviour(Entity target) {
+    struct ChaseBehaviourComponent* chase_behaviour = malloc(sizeof(struct ChaseBehaviourComponent));
+    if (!chase_behaviour) {
         TraceLog(LOG_ERROR, "failed to allocate memory for ChaseBehaviourComponent");
-        return;
-    }
-    component->target = target;
-
-    if (chase_behaviours->components[entity] != NULL) {
-        TraceLog(LOG_ERROR, "entity %u already has a ChaseBehaviourComponent", entity);
-        FreeChaseBehaviour(chase_behaviours->components[entity]);
-    }
-    chase_behaviours->components[entity] = component;
-}
-
-struct ChaseBehaviourComponent* GetChaseBehaviour(struct ChaseBehaviourComponentArray* chase_behaviours, Entity entity) {
-    if (!chase_behaviours) return NULL;
-    if (entity >= MAX_ENTITIES) {
-        TraceLog(LOG_ERROR, "entity index out of bounds");
         return NULL;
     }
-    return chase_behaviours->components[entity];
+    chase_behaviour->target = target;
+
+    return chase_behaviour;
 }
 
 void FreeChaseBehaviour(struct ChaseBehaviourComponent* chase_behaviour) {

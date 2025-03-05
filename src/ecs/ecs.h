@@ -14,6 +14,7 @@ enum ComponentType {
     COMPONENT_TYPE_COLLIDER,
     COMPONENT_TYPE_HEALTH,
     COMPONENT_TYPE_HARM,
+    COMPONENT_TYPE_CHASE_BEHAVIOUR,
 };
 
 struct ECS {
@@ -28,6 +29,7 @@ struct ECS {
     struct ColliderComponent* collider_component_array[MAX_ENTITIES];
     struct HealthComponent* health_component_array[MAX_ENTITIES];
     struct HarmComponent* harm_component_array[MAX_ENTITIES];
+    struct ChaseBehaviourComponent* chase_behaviour_component_array[MAX_ENTITIES];
 };
 
 struct ECS* NewECS(void);

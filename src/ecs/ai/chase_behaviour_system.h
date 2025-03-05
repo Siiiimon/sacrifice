@@ -8,7 +8,7 @@
 void UpdateChaseBehaviours(
     struct PositionComponent* positions[MAX_ENTITIES],
     struct VelocityComponent* velocities[MAX_ENTITIES],
-    struct ChaseBehaviourComponentArray* chaseBehaviours
+    struct ChaseBehaviourComponent* chaseBehaviours[MAX_ENTITIES]
 );
 
 #endif

@@ -3,12 +3,12 @@
 #include <ecs.h>
 
 void UpdateCombat(
-    struct ColliderComponentArray* colliders,
+    struct ColliderComponent* colliders[MAX_ENTITIES],
     struct HarmComponentArray* harms,
     struct HealthComponentArray* healths
 ) {
     for (Entity i = 0; i < MAX_ENTITIES; i++) {
-        struct ColliderComponent* collider = colliders->components[i];
+        struct ColliderComponent* collider = colliders[i];
         struct HealthComponent* health = healths->components[i];
 
         if (!collider || !health) continue;

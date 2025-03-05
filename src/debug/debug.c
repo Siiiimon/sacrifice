@@ -5,11 +5,11 @@
 
 #include <debug_data.h>
 
-void DrawCollisionBounds(RenderTexture2D debug_layer, struct PositionComponent* positions[MAX_ENTITIES], struct ColliderComponentArray* colliders) {
+void DrawCollisionBounds(RenderTexture2D debug_layer, struct PositionComponent* positions[MAX_ENTITIES], struct ColliderComponent* colliders[MAX_ENTITIES]) {
     BeginTextureMode(debug_layer);
     for (Entity i = 0; i < MAX_ENTITIES; i++) {
-        if (colliders->components[i] == NULL) continue;
-        struct ColliderComponent* collider = colliders->components[i];
+        if (colliders[i] == NULL) continue;
+        struct ColliderComponent* collider = colliders[i];
 
         if (positions[i] == NULL) continue;
         struct PositionComponent* position = positions[i];

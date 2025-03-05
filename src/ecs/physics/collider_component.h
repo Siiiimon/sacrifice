@@ -6,10 +6,6 @@
 
 #include <ecs.h>
 
-struct ColliderComponentArray {
-    struct ColliderComponent* components[MAX_ENTITIES];
-};
-
 enum ColliderShape {
     COLLIDER_SHAPE_RECTANGLE,
     COLLIDER_SHAPE_CIRCLE,
@@ -36,12 +32,8 @@ struct ColliderComponent {
     } shape;
 };
 
-struct ColliderComponentArray* NewColliderComponentArray(void);
-void FreeColliderComponentArray(struct ColliderComponentArray* colliders);
-
-void AddRectangleColliderToEntity(Entity entity, struct ColliderComponentArray* colliders, float width, float height, Vector2 offset, bool is_bound_to_map);
-void AddCircleColliderToEntity(Entity entity, struct ColliderComponentArray* colliders, float radius, Vector2 offset, bool is_bound_to_map);
-struct ColliderComponent* GetCollider(struct ColliderComponentArray* colliders, Entity entity);
+struct ColliderComponent* NewRectangleCollider(float width, float height, Vector2 offset, bool is_bound_to_map);
+struct ColliderComponent* NewCircleCollider(float radius, Vector2 offset, bool is_bound_to_map);
 void FreeCollider(struct ColliderComponent* collider);
 
 #endif

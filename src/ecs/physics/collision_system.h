@@ -5,6 +5,6 @@
 #include "ecs/tag_component.h"
 #include "position_component.h"
 
-void UpdateColliders(struct PositionComponent* positions[MAX_ENTITIES], struct ColliderComponentArray* colliders, struct TagComponent* tags[MAX_ENTITIES]);
+void UpdateColliders(struct PositionComponent* positions[MAX_ENTITIES], struct ColliderComponent* colliders[MAX_ENTITIES], struct TagComponent* tags[MAX_ENTITIES]);
 
 #endif

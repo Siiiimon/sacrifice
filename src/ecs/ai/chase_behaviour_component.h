@@ -3,19 +3,21 @@
 
 #include "defs.h"
 
+#include <ecs.h>
+
 struct ChaseBehaviourComponentArray {
     struct ChaseBehaviourComponent* components[MAX_ENTITIES];
 };
 
 struct ChaseBehaviourComponent {
-    unsigned int target;
+    Entity target;
 };
 
 struct ChaseBehaviourComponentArray* NewChaseBehaviourComponentArray(void);
 void FreeChaseBehaviourComponentArray(struct ChaseBehaviourComponentArray* chase_behaviours);
 
-void AddChaseBehaviourToEntity(unsigned int entity, struct ChaseBehaviourComponentArray* chase_behaviours, unsigned int target);
-struct ChaseBehaviourComponent* GetChaseBehaviour(struct ChaseBehaviourComponentArray* chase_behaviours, unsigned int entity);
+void AddChaseBehaviourToEntity(Entity entity, struct ChaseBehaviourComponentArray* chase_behaviours, Entity target);
+struct ChaseBehaviourComponent* GetChaseBehaviour(struct ChaseBehaviourComponentArray* chase_behaviours, Entity entity);
 void FreeChaseBehaviour(struct ChaseBehaviourComponent* chase_behaviour);
 
 #endif

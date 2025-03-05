@@ -10,7 +10,7 @@ struct HealthComponentArray* NewHealthComponentArray(void) {
         return NULL;
     }
 
-    for (unsigned int i = 0; i < MAX_ENTITIES; i++) {
+    for (Entity i = 0; i < MAX_ENTITIES; i++) {
         healths->components[i] = NULL;
     }
 
@@ -25,7 +25,7 @@ void FreeHealthComponentArray(struct HealthComponentArray* healths) {
     free(healths);
 }
 
-void AddHealthToEntity(unsigned int entity, struct HealthComponentArray* healths, int max_health) {
+void AddHealthToEntity(Entity entity, struct HealthComponentArray* healths, int max_health) {
     if (!healths) return;
     if (entity >= MAX_ENTITIES) {
         TraceLog(LOG_ERROR, "entity index out of bounds");
@@ -51,7 +51,7 @@ void AddHealthToEntity(unsigned int entity, struct HealthComponentArray* healths
     healths->components[entity] = component;
 }
 
-struct HealthComponent* GetHealth(struct HealthComponentArray* healths, unsigned int entity) {
+struct HealthComponent* GetHealth(struct HealthComponentArray* healths, Entity entity) {
     if (!healths) return NULL;
     if (entity >= MAX_ENTITIES) {
         TraceLog(LOG_ERROR, "entity index out of bounds");

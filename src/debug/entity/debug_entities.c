@@ -16,8 +16,8 @@ void DrawEntitiesDebugUI(struct GameContext* game_context) {
         igSeparator();
         igSpacing();
 
-        unsigned int active_entity_count;
-        unsigned int* active_entities = GetActiveEntities(game_context->world->entities, &active_entity_count);
+        Entity active_entity_count;
+        Entity* active_entities = GetActiveEntities(game_context->world->entities, &active_entity_count);
         if (active_entities != NULL) {
             ImGuiTableFlags table_flags =
                 ImGuiTableFlags_SizingFixedFit |
@@ -31,8 +31,8 @@ void DrawEntitiesDebugUI(struct GameContext* game_context) {
                 igTableSetupColumn("", ImGuiTableColumnFlags_WidthFixed, 0.0f, 2);
 
                 igTableHeadersRow();
-                for (unsigned int i = 0; i < active_entity_count; ++i) {
-                    unsigned int entity = active_entities[i];
+                for (Entity i = 0; i < active_entity_count; ++i) {
+                    Entity entity = active_entities[i];
                     igTableNextRow(0, 0.0f);
                     igTableNextColumn();
                     igText("%u", entity);

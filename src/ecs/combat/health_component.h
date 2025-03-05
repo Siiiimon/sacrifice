@@ -20,8 +20,8 @@ struct HealthComponent {
 struct HealthComponentArray* NewHealthComponentArray(void);
 void FreeHealthComponentArray(struct HealthComponentArray* healths);
 
-void AddHealthToEntity(unsigned int entity, struct HealthComponentArray* healths, int max_health);
-struct HealthComponent* GetHealth(struct HealthComponentArray* healths, unsigned int entity);
+void AddHealthToEntity(Entity entity, struct HealthComponentArray* healths, int max_health);
+struct HealthComponent* GetHealth(struct HealthComponentArray* healths, Entity entity);
 void ReceiveDamage(struct HealthComponent* health, struct HarmComponent* harm);
 void UpdateInvincibilityFrames(struct HealthComponent* health);
 void FreeHealth(struct HealthComponent* health);

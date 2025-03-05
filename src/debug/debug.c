@@ -7,7 +7,7 @@
 
 void DrawCollisionBounds(RenderTexture2D debug_layer, struct PositionComponentArray* positions, struct ColliderComponentArray* colliders) {
     BeginTextureMode(debug_layer);
-    for (unsigned int i = 0; i < MAX_ENTITIES; i++) {
+    for (Entity i = 0; i < MAX_ENTITIES; i++) {
         if (colliders->components[i] == NULL) continue;
         struct ColliderComponent* collider = colliders->components[i];
 

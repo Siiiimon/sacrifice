@@ -10,7 +10,7 @@ struct VelocityComponentArray* NewVelocityComponentArray(void) {
         return NULL;
     }
 
-    for (unsigned int i = 0; i < MAX_ENTITIES; i++) {
+    for (Entity i = 0; i < MAX_ENTITIES; i++) {
         velocities->components[i] = NULL;
     }
 
@@ -25,7 +25,7 @@ void FreeVelocityComponentArray(struct VelocityComponentArray* velocities) {
     free(velocities);
 }
 
-void AddVelocityToEntity(unsigned int entity, struct VelocityComponentArray* velocities, float x, float y) {
+void AddVelocityToEntity(Entity entity, struct VelocityComponentArray* velocities, float x, float y) {
     if (!velocities) return;
     if (entity >= MAX_ENTITIES) {
         TraceLog(LOG_ERROR, "entity index out of bounds");
@@ -47,7 +47,7 @@ void AddVelocityToEntity(unsigned int entity, struct VelocityComponentArray* vel
     velocities->components[entity] = component;
 }
 
-struct VelocityComponent* GetVelocity(struct VelocityComponentArray* velocities, unsigned int entity) {
+struct VelocityComponent* GetVelocity(struct VelocityComponentArray* velocities, Entity entity) {
     if (!velocities) return NULL;
     if (entity >= MAX_ENTITIES) {
         TraceLog(LOG_ERROR, "entity index out of bounds");

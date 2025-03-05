@@ -70,7 +70,7 @@ static bool CircleOnCircle(
 
 
 void UpdateColliders(struct PositionComponentArray* positions, struct ColliderComponentArray* colliders, struct TagComponentArray* tags) {
-    for (unsigned int i = 0; i < MAX_ENTITIES; i++) {
+    for (Entity i = 0; i < MAX_ENTITIES; i++) {
         if (colliders->components[i] == NULL) {
             continue;
         }
@@ -84,11 +84,11 @@ void UpdateColliders(struct PositionComponentArray* positions, struct ColliderCo
 
 
         our_collider->colliding_count = 0;
-        for (unsigned int i = 0; i < MAX_COLLISIONS; i++) {
+        for (Entity i = 0; i < MAX_COLLISIONS; i++) {
             our_collider->colliding_with[i] = 0;
         }
 
-        for (unsigned int j = 0; j < MAX_ENTITIES; j++) {
+        for (Entity j = 0; j < MAX_ENTITIES; j++) {
             if (i == j || colliders->components[j] == NULL || positions->components[j] == NULL) {
                 continue;
             }

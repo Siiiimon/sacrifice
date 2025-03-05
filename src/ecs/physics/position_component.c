@@ -10,7 +10,7 @@ struct PositionComponentArray* NewPositionComponentArray(void) {
         return NULL;
     }
 
-    for (unsigned int i = 0; i < MAX_ENTITIES; i++) {
+    for (Entity i = 0; i < MAX_ENTITIES; i++) {
         position_components->components[i] = NULL;
     }
 
@@ -22,13 +22,13 @@ void FreePositionComponentArray(struct PositionComponentArray* position_componen
         return;
     }
 
-    for (unsigned int i = 0; i < MAX_ENTITIES; i++) {
+    for (Entity i = 0; i < MAX_ENTITIES; i++) {
         FreePosition(position_components->components[i]);
     }
 }
 
 
-void AddPositionToEntity(unsigned int entity, struct PositionComponentArray* position_components, float x, float y) {
+void AddPositionToEntity(Entity entity, struct PositionComponentArray* position_components, float x, float y) {
     struct PositionComponent* component = malloc(sizeof(struct PositionComponent));
     if (component == NULL) {
         TraceLog(LOG_ERROR, "failed to allocate memory for entity %u's PositionComponent", entity);
@@ -47,6 +47,6 @@ void FreePosition(struct PositionComponent* component) {
     free(component);
 }
 
-struct PositionComponent* GetPosition(struct PositionComponentArray* position_components, unsigned int entity) {
+struct PositionComponent* GetPosition(struct PositionComponentArray* position_components, Entity entity) {
     return position_components->components[entity];
 }

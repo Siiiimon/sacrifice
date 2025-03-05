@@ -7,6 +7,7 @@
 typedef unsigned int Entity;
 
 enum ComponentType {
+    COMPONENT_TYPE_TAG,
     COMPONENT_TYPE_POSITION,
     COMPONENT_TYPE_VELOCITY,
 };
@@ -16,6 +17,7 @@ struct ECS {
     bool active_entities[MAX_ENTITIES];
     Entity next_entity;
 
+    struct TagComponent* tag_component_array[MAX_ENTITIES];
     struct PositionComponent* position_component_array[MAX_ENTITIES];
     struct VelocityComponent* velocity_component_array[MAX_ENTITIES];
 };

@@ -69,7 +69,7 @@ static bool CircleOnCircle(
 }
 
 
-void UpdateColliders(struct PositionComponent* positions[MAX_ENTITIES], struct ColliderComponentArray* colliders, struct TagComponentArray* tags) {
+void UpdateColliders(struct PositionComponent* positions[MAX_ENTITIES], struct ColliderComponentArray* colliders, struct TagComponent* tags[MAX_ENTITIES]) {
     for (Entity i = 0; i < MAX_ENTITIES; i++) {
         if (colliders->components[i] == NULL) {
             continue;
@@ -106,9 +106,9 @@ void UpdateColliders(struct PositionComponent* positions[MAX_ENTITIES], struct C
                 // our Rect on their Rect
                 collision_detected = RectOnRect(our_position, our_collider, their_position, their_collider);
 
-                struct TagComponent* our_tag = tags->components[i];
+                struct TagComponent* our_tag = tags[i];
                 if (our_tag && our_tag->tag == ENTITY_TAG_PLAYER) {
-                    struct TagComponent* their_tag = tags->components[j];
+                    struct TagComponent* their_tag = tags[j];
                     if (their_tag && their_tag->tag == ENTITY_TAG_WALL) {
                         Rectangle overlap = GetCollisionRec(
                             CLITERAL(Rectangle){

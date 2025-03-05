@@ -5,10 +5,6 @@
 
 #include <ecs.h>
 
-struct TagComponentArray {
-    struct TagComponent* components[MAX_ENTITIES];
-};
-
 enum ENTITY_TAG {
     ENTITY_TAG_PLAYER = 0,
     ENTITY_TAG_WALL = 1 << 0,
@@ -19,11 +15,7 @@ struct TagComponent {
     enum ENTITY_TAG tag;
 };
 
-struct TagComponentArray* NewTagComponentArray(void);
-void FreeTagComponentArray(struct TagComponentArray* tags);
-
-void AddTagToEntity(Entity entity, struct TagComponentArray* tags, enum ENTITY_TAG tag);
-struct TagComponent* GetTag(struct TagComponentArray* tags, Entity entity);
+struct TagComponent* NewTag(enum ENTITY_TAG tag);
 void FreeTag(struct TagComponent* tag);
 
 const char* GetTagName(enum ENTITY_TAG tag);

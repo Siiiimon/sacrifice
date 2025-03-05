@@ -94,7 +94,11 @@ void DrawEntityInspector(struct GameContext* game_context) {
         }
 
         if (igCollapsingHeader_TreeNodeFlags("Health / Harm", 0)) {
-            struct HealthComponent* health = GetHealth(game_context->world->healths, entity);
+            struct HealthComponent* health = GetComponentOfEntity(
+                game_context->world->ecs,
+                entity,
+                COMPONENT_TYPE_HEALTH
+            );
             if (health) {
                 if (health->current_health <= 0) {
                     igText("entity is dead");

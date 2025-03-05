@@ -8,6 +8,6 @@
 void UpdateCombat(
     struct ColliderComponent* colliders[MAX_ENTITIES],
     struct HarmComponentArray* harms,
-    struct HealthComponentArray* healths
+    struct HealthComponent* healths[MAX_ENTITIES]
 );
 #endif //COMBAT_SYSTEM_H

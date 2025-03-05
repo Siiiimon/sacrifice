@@ -5,10 +5,6 @@
 #include <stdbool.h>
 #include <harm_component.h>
 
-struct HealthComponentArray {
-    struct HealthComponent* components[MAX_ENTITIES];
-};
-
 struct HealthComponent {
     int max_health;
     int current_health;
@@ -17,11 +13,7 @@ struct HealthComponent {
     float invincibility_timer;
 };
 
-struct HealthComponentArray* NewHealthComponentArray(void);
-void FreeHealthComponentArray(struct HealthComponentArray* healths);
-
-void AddHealthToEntity(Entity entity, struct HealthComponentArray* healths, int max_health);
-struct HealthComponent* GetHealth(struct HealthComponentArray* healths, Entity entity);
+struct HealthComponent* NewHealth(int max_health);
 void ReceiveDamage(struct HealthComponent* health, struct HarmComponent* harm);
 void UpdateInvincibilityFrames(struct HealthComponent* health);
 void FreeHealth(struct HealthComponent* health);

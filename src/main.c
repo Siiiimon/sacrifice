@@ -47,7 +47,6 @@ int main(void)
 
     game_context->world = malloc(sizeof(struct World));
     game_context->world->ecs = NewECS();
-    game_context->world->healths = NewHealthComponentArray();
     game_context->world->harms = NewHarmComponentArray();
     game_context->world->chase_behaviours = NewChaseBehaviourComponentArray();
 
@@ -91,7 +90,12 @@ int main(void)
         NewRectangleCollider(cat.width, cat.height, CLITERAL(Vector2){cat.width / 2, cat.height / 2}, true),
         COMPONENT_TYPE_COLLIDER
     );
-    AddHealthToEntity(player, game_context->world->healths, 100);
+    AttachComponentToEntity(
+        game_context->world->ecs,
+        player,
+        NewHealth(100),
+        COMPONENT_TYPE_HEALTH
+    );
 
     AttachComponentToEntity(
         game_context->world->ecs,
@@ -160,7 +164,11 @@ int main(void)
         player,
         COMPONENT_TYPE_VELOCITY
     );
-    struct HealthComponent* player_health = GetHealth(game_context->world->healths, player);
+    struct HealthComponent* player_health = GetComponentOfEntity(
+        game_context->world->ecs,
+        player,
+        COMPONENT_TYPE_HEALTH
+    );
 
     rlImGuiSetup(true);
 
@@ -190,7 +198,7 @@ int main(void)
         if (game_context->world->should_draw_collision_bounds) {
             DrawCollisionBounds(game_context->world->debug_layer, game_context->world->ecs->position_component_array, game_context->world->ecs->collider_component_array);
         }
-        UpdateCombat(game_context->world->ecs->collider_component_array, game_context->world->harms, game_context->world->healths);
+        UpdateCombat(game_context->world->ecs->collider_component_array, game_context->world->harms, game_context->world->ecs->health_component_array);
 
         BeginDrawing();
 

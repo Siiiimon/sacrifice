@@ -38,21 +38,28 @@ void AttachComponentToEntity(struct ECS* ecs, Entity entity, void* component, en
     switch (component_type) {
     case COMPONENT_TYPE_TAG:
         ecs->tag_component_array[entity] = (struct TagComponent*)component;
+        break;
     case COMPONENT_TYPE_POSITION:
         ecs->position_component_array[entity] = (struct PositionComponent*)component;
         break;
     case COMPONENT_TYPE_VELOCITY:
         ecs->velocity_component_array[entity] = (struct VelocityComponent*)component;
+        break;
     case COMPONENT_TYPE_SPRITE:
         ecs->sprite_component_array[entity] = (struct SpriteComponent*)component;
+        break;
     case COMPONENT_TYPE_COLLIDER:
         ecs->collider_component_array[entity] = (struct ColliderComponent*)component;
+        break;
     case COMPONENT_TYPE_HEALTH:
         ecs->health_component_array[entity] = (struct HealthComponent*)component;
+        break;
     case COMPONENT_TYPE_HARM:
         ecs->harm_component_array[entity] = (struct HarmComponent*)component;
+        break;
     case COMPONENT_TYPE_CHASE_BEHAVIOUR:
         ecs->chase_behaviour_component_array[entity] = (struct ChaseBehaviourComponent*)component;
+        break;
     default:
         TraceLog(LOG_ERROR, "Failed to attach component to %u, but it's an unknown component type");
     }

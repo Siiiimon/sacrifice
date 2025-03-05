@@ -112,7 +112,11 @@ void DrawEntityInspector(struct GameContext* game_context) {
                 }
             }
 
-            struct HarmComponent* harm = GetHarm(game_context->world->harms, entity);
+            struct HarmComponent* harm = GetComponentOfEntity(
+                game_context->world->ecs,
+                entity,
+                COMPONENT_TYPE_HARM
+            );
             if (harm) {
                 igText("deals %d damage", harm->damage);
             }

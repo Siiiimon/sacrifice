@@ -4,7 +4,7 @@
 
 void UpdateCombat(
     struct ColliderComponent* colliders[MAX_ENTITIES],
-    struct HarmComponentArray* harms,
+    struct HarmComponent* harms[MAX_ENTITIES],
     struct HealthComponent* healths[MAX_ENTITIES]
 ) {
     for (Entity i = 0; i < MAX_ENTITIES; i++) {
@@ -17,7 +17,7 @@ void UpdateCombat(
 
         for (short j = 0; j < collider->colliding_count; j++) {
             Entity other = collider->colliding_with[j];
-            struct HarmComponent* harm = harms->components[other];
+            struct HarmComponent* harm = harms[other];
             if (harm)
                 ReceiveDamage(health, harm);
         }

@@ -47,7 +47,6 @@ int main(void)
 
     game_context->world = malloc(sizeof(struct World));
     game_context->world->ecs = NewECS();
-    game_context->world->harms = NewHarmComponentArray();
     game_context->world->chase_behaviours = NewChaseBehaviourComponentArray();
 
     game_context->world->player_move_speed = 6.0f;
@@ -156,8 +155,13 @@ int main(void)
         NewCircleCollider(rotund_text.width / 2, CLITERAL(Vector2){rotund_text.width / 2, rotund_text.height / 2}, true),
         COMPONENT_TYPE_COLLIDER
     );
+    AttachComponentToEntity(
+        game_context->world->ecs,
+        rotund,
+        NewHarm(10),
+        COMPONENT_TYPE_HARM
+    );
     AddChaseBehaviourToEntity(rotund, game_context->world->chase_behaviours, player);
-    AddHarmToEntity(rotund, game_context->world->harms, 10);
 
     struct VelocityComponent* player_velocity = GetComponentOfEntity(
         game_context->world->ecs,
@@ -198,7 +202,7 @@ int main(void)
         if (game_context->world->should_draw_collision_bounds) {
             DrawCollisionBounds(game_context->world->debug_layer, game_context->world->ecs->position_component_array, game_context->world->ecs->collider_component_array);
         }
-        UpdateCombat(game_context->world->ecs->collider_component_array, game_context->world->harms, game_context->world->ecs->health_component_array);
+        UpdateCombat(game_context->world->ecs->collider_component_array, game_context->world->ecs->harm_component_array, game_context->world->ecs->health_component_array);
 
         BeginDrawing();
 

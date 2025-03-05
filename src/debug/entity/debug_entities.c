@@ -1,9 +1,9 @@
 #include "debug_entities.h"
-#include "cimgui_include.h"
+#include "../../ecs/tag_component.h"
+#include "../cimgui_include.h"
 #include "debug_entity.h"
-#include "tag_component.h"
 
-#include <debug_data.h>
+#include "../debug_data.h"
 #include <stdlib.h>
 
 void DrawEntitiesDebugUI(struct GameContext* game_context) {

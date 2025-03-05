@@ -1,27 +1,13 @@
-#include "debug_entity.h"
 #include "cimgui_include.h"
 #include "raylib.h"
 #include "rlImGui.h"
 
+#include "debug_entity.h"
+#include "entity/debug_position.h"
+
 #include <debug_data.h>
 #include <harm_component.h>
 #include <health_component.h>
-
-static void DrawPositionDebug(RenderTexture2D debug_layer, struct PositionComponent* position) {
-    BeginTextureMode(debug_layer);
-    DrawLineEx(
-        CLITERAL(Vector2){position->x - 8, position->y},
-        CLITERAL(Vector2){position->x + 8, position->y},
-        2.0f,
-        MAGENTA);
-    DrawLineEx(
-        CLITERAL(Vector2){position->x, position->y - 8},
-        CLITERAL(Vector2){position->x, position->y + 8},
-        2.0f,
-        MAGENTA);
-    EndTextureMode();
-    igText("Position: (%.1f, %.1f)", position->x, position->y);
-}
 
 static void DrawVelocityDebug(struct VelocityComponent* velocity) {
     igText("Velocity: (%.1f, %.1f)", velocity->x, velocity->y);

@@ -1,6 +1,6 @@
 #include "debug.h"
 #include "cimgui.h"
-#include "debug_entities.h"
+#include "entity/debug_entities.h"
 #include "raylib.h"
 
 #include <debug_data.h>

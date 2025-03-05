@@ -1,7 +1,7 @@
 #include "raylib.h"
 
 #include "game_context.h"
-#include "ecs/entity_manager.h"
+#include "ecs/ecs.h"
 #include "ecs/physics/position_component.h"
 #include "ecs/physics/movement_system.h"
 #include "ecs/physics/collider_component.h"

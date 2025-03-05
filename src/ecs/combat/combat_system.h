@@ -7,7 +7,7 @@
 
 void UpdateCombat(
     struct ColliderComponent* colliders[MAX_ENTITIES],
-    struct HarmComponentArray* harms,
+    struct HarmComponent* harms[MAX_ENTITIES],
     struct HealthComponent* healths[MAX_ENTITIES]
 );
 #endif //COMBAT_SYSTEM_H

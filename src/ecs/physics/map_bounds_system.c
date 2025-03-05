@@ -1,11 +1,11 @@
 #include "map_bounds_system.h"
 #include <stdlib.h>
 
-void UpdateMapBounds(struct PositionComponentArray* positions, struct ColliderComponentArray* colliders, Vector2 map_size) {
+void UpdateMapBounds(struct PositionComponent* positions[MAX_ENTITIES], struct ColliderComponentArray* colliders, Vector2 map_size) {
     for (Entity i = 0; i < MAX_ENTITIES; i++) {
-        struct PositionComponent* position = positions->components[i];
+        struct PositionComponent* position = positions[i];
         struct ColliderComponent* collider = colliders->components[i];
-        if (position == NULL || colliders == NULL) continue;
+        if (position == NULL || collider == NULL) continue;
         if (!collider->is_bound_to_map) continue;
 
         if (collider->shape_type == COLLIDER_SHAPE_RECTANGLE) {

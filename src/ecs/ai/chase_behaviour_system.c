@@ -3,19 +3,19 @@
 #include "raymath.h"
 
 void UpdateChaseBehaviours(
-    struct PositionComponentArray* positions,
+    struct PositionComponent* positions[MAX_ENTITIES],
     struct VelocityComponentArray* velocities,
     struct ChaseBehaviourComponentArray* chaseBehaviours
 ) {
     for (Entity i = 0; i < MAX_ENTITIES; i++) {
-        struct PositionComponent* position = positions->components[i];
+        struct PositionComponent* position = positions[i];
         struct VelocityComponent* velocity = velocities->components[i];
         struct ChaseBehaviourComponent* chaseBehaviour = chaseBehaviours->components[i];
 
         if (!position || !velocity || !chaseBehaviour)
             continue;
 
-        struct PositionComponent* target_position = positions->components[chaseBehaviour->target];
+        struct PositionComponent* target_position = positions[chaseBehaviour->target];
         if (!target_position) {
             TraceLog(LOG_ERROR, "chase target entity not found for entity %u", i);
             continue;

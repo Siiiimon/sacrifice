@@ -9,7 +9,7 @@
 void DrawEntitiesDebugUI(struct GameContext* game_context) {
     if (game_context->debug_data->show_entities_window && igBegin("Entities", &game_context->debug_data->show_entities_window, 0)) {
         if (igCollapsingHeader_TreeNodeFlags("Entity Manager", ImGuiTreeNodeFlags_DefaultOpen)) {
-            igText("Next Entity Id: %u", game_context->world->entities->next_entity);
+            igText("Next Entity Id: %u", game_context->world->ecs->next_entity);
         }
 
         igSpacing();
@@ -17,7 +17,7 @@ void DrawEntitiesDebugUI(struct GameContext* game_context) {
         igSpacing();
 
         Entity active_entity_count;
-        Entity* active_entities = GetActiveEntities(game_context->world->entities, &active_entity_count);
+        Entity* active_entities = GetActiveEntities(game_context->world->ecs, &active_entity_count);
         if (active_entities != NULL) {
             ImGuiTableFlags table_flags =
                 ImGuiTableFlags_SizingFixedFit |

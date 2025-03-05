@@ -10,9 +10,8 @@
 #include "tag_component.h"
 
 struct World {
-    struct ECS* entities;
+    struct ECS* ecs;
     struct TagComponentArray* tags;
-    struct PositionComponentArray* positions;
     struct VelocityComponentArray* velocities;
     struct SpriteComponentArray* sprites;
     struct ColliderComponentArray* colliders;

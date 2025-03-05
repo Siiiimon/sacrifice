@@ -48,7 +48,11 @@ void DrawEntityInspector(struct GameContext* game_context) {
             igEnd();
             return;
         }
-        struct PositionComponent* position = GetPosition(game_context->world->positions, entity);
+        struct PositionComponent* position = GetComponentOfEntity(
+            game_context->world->ecs,
+            entity,
+            COMPONENT_TYPE_POSITION
+        );
         if (position) {
             DrawPositionDebug(game_context->world->debug_layer, position);
         }

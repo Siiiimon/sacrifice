@@ -1,7 +1,7 @@
 #ifndef WORLD_H
 #define WORLD_H
 
-#include "ecs/entity_manager.h"
+#include "ecs/ecs.h"
 #include "ecs/physics/position_component.h"
 #include "ecs/physics/velocity_component.h"
 #include "ecs/physics/collider_component.h"
@@ -10,7 +10,7 @@
 #include "tag_component.h"
 
 struct World {
-    struct EntityManager* entities;
+    struct ECS* entities;
     struct TagComponentArray* tags;
     struct PositionComponentArray* positions;
     struct VelocityComponentArray* velocities;

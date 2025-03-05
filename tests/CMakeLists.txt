@@ -3,7 +3,7 @@ include_directories(../vendor/greatest)
 add_executable(sacrifice_tests
     test_main.c
     test_entity_manager.c
-    ../src/ecs/entity_manager.c
+        ../src/ecs/ecs.c
     test_movement_system.c
     ../src/ecs/physics/movement_system.c
     ../src/ecs/physics/velocity_component.c

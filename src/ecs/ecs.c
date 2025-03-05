@@ -1,10 +1,10 @@
-#include "entity_manager.h"
+#include "ecs.h"
 #include "raylib.h"
 #include <stdlib.h>
 #include <string.h>
 
-struct EntityManager* NewEntityManager(void) {
-    struct EntityManager* manager = malloc(sizeof(struct EntityManager));
+struct ECS* NewEntityManager(void) {
+    struct ECS* manager = malloc(sizeof(struct ECS));
     if (!manager) {
         TraceLog(LOG_ERROR, "Failed to allocate memory for EntityManager");
         return NULL;
@@ -15,11 +15,11 @@ struct EntityManager* NewEntityManager(void) {
     return manager;
 }
 
-void FreeEntityManager(struct EntityManager *manager) {
+void FreeEntityManager(struct ECS *manager) {
     free(manager);
 }
 
-unsigned int NewEntity(struct EntityManager* manager) {
+unsigned int NewEntity(struct ECS* manager) {
     unsigned int entity = manager->next_entity++;
     TraceLog(LOG_INFO, "new entity: %u", entity);
     manager->entities[entity] = entity;
@@ -27,7 +27,7 @@ unsigned int NewEntity(struct EntityManager* manager) {
     return entity;
 }
 
-unsigned int* GetActiveEntities(struct EntityManager* manager, unsigned int* count) {
+unsigned int* GetActiveEntities(struct ECS* manager, unsigned int* count) {
     *count = 0;
     unsigned int* active_entities = malloc(sizeof(unsigned int) * manager->next_entity);
     if (!active_entities) {
@@ -43,7 +43,7 @@ unsigned int* GetActiveEntities(struct EntityManager* manager, unsigned int* cou
     return active_entities;
 }
 
-void RemoveEntity(struct EntityManager* manager, unsigned int entity) {
+void RemoveEntity(struct ECS* manager, unsigned int entity) {
     manager->entities[entity] = 0;
     manager->active_entities[entity] = false;
 }

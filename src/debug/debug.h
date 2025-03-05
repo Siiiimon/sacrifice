@@ -5,6 +5,6 @@
 #include "../game_context.h"
 
 void DrawDebugUI(struct GameContext* game_context);
-void DrawCollisionBounds(RenderTexture2D debug_layer, struct PositionComponent* positions[MAX_ENTITIES], struct ColliderComponentArray* colliders);
+void DrawCollisionBounds(RenderTexture2D debug_layer, struct PositionComponent* positions[MAX_ENTITIES], struct ColliderComponent* colliders[MAX_ENTITIES]);
 
 #endif

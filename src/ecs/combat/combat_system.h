@@ -6,7 +6,7 @@
 #include "health_component.h"
 
 void UpdateCombat(
-    struct ColliderComponentArray* colliders,
+    struct ColliderComponent* colliders[MAX_ENTITIES],
     struct HarmComponentArray* harms,
     struct HealthComponentArray* healths
 );

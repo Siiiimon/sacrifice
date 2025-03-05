@@ -5,42 +5,11 @@
 #include <ecs.h>
 #include <stdlib.h>
 
-struct ColliderComponentArray* NewColliderComponentArray(void) {
-    struct ColliderComponentArray* colliders = malloc(sizeof(struct ColliderComponentArray));
-    if (!colliders) {
-        TraceLog(LOG_ERROR, "Failed to allocate memory for ColliderComponentArray");
-        return NULL;
-    }
-
-    for (Entity i = 0; i < MAX_ENTITIES; i++) {
-        colliders->components[i] = NULL;
-    }
-
-    return colliders;
-}
-
-void FreeColliderComponentArray(struct ColliderComponentArray* colliders) {
-    if (!colliders) return;
-
-    for (Entity i = 0; i < MAX_ENTITIES; i++) {
-        FreeCollider(colliders->components[i]);
-    }
-
-    free(colliders);
-}
-
-
-void AddRectangleColliderToEntity(Entity entity, struct ColliderComponentArray* colliders, float width, float height, Vector2 offset, bool is_bound_to_map) {
-    if (!colliders) return;
-    if (entity >= MAX_ENTITIES) {
-        TraceLog(LOG_ERROR, "Entity index out of bounds");
-        return;
-    }
-
+struct ColliderComponent* NewRectangleCollider(float width, float height, Vector2 offset, bool is_bound_to_map) {
     struct ColliderComponent* collider = malloc(sizeof(struct ColliderComponent));
     if (!collider) {
         TraceLog(LOG_ERROR, "Failed to allocate memory for ColliderComponent");
-        return;
+        return NULL;
     }
 
     collider->offset = offset;
@@ -53,24 +22,14 @@ void AddRectangleColliderToEntity(Entity entity, struct ColliderComponentArray* 
     collider->shape.rectangle.width = width;
     collider->shape.rectangle.height = height;
 
-    if (colliders->components[entity] != NULL) {
-        TraceLog(LOG_ERROR, "Entity %u already has a collider", entity);
-        FreeCollider(collider);
-    }
-    colliders->components[entity] = collider;
+    return collider;
 }
 
-void AddCircleColliderToEntity(Entity entity, struct ColliderComponentArray* colliders, float radius, Vector2 offset, bool is_bound_to_map) {
-    if (!colliders) return;
-    if (entity >= MAX_ENTITIES) {
-        TraceLog(LOG_ERROR, "Entity index out of bounds");
-        return;
-    }
-
+struct ColliderComponent* NewCircleCollider(float radius, Vector2 offset, bool is_bound_to_map) {
     struct ColliderComponent* collider = malloc(sizeof(struct ColliderComponent));
     if (!collider) {
         TraceLog(LOG_ERROR, "Failed to allocate memory for ColliderComponent");
-        return;
+        return NULL;
     }
 
     collider->offset = offset;
@@ -82,20 +41,7 @@ void AddCircleColliderToEntity(Entity entity, struct ColliderComponentArray* col
     collider->shape_type = COLLIDER_SHAPE_CIRCLE;
     collider->shape.circle.radius = radius;
 
-    if (colliders->components[entity] != NULL) {
-        TraceLog(LOG_ERROR, "Entity %u already has a collider", entity);
-        FreeCollider(collider);
-    }
-    colliders->components[entity] = collider;
-}
-
-struct ColliderComponent* GetCollider(struct ColliderComponentArray* colliders, Entity entity) {
-    if (!colliders) return NULL;
-    if (entity >= MAX_ENTITIES) {
-        TraceLog(LOG_ERROR, "Entity index out of bounds");
-        return NULL;
-    }
-    return colliders->components[entity];
+    return collider;
 }
 
 void FreeCollider(struct ColliderComponent* collider) {

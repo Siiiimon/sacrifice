@@ -69,12 +69,12 @@ static bool CircleOnCircle(
 }
 
 
-void UpdateColliders(struct PositionComponent* positions[MAX_ENTITIES], struct ColliderComponentArray* colliders, struct TagComponent* tags[MAX_ENTITIES]) {
+void UpdateColliders(struct PositionComponent* positions[MAX_ENTITIES], struct ColliderComponent* colliders[MAX_ENTITIES], struct TagComponent* tags[MAX_ENTITIES]) {
     for (Entity i = 0; i < MAX_ENTITIES; i++) {
-        if (colliders->components[i] == NULL) {
+        if (colliders[i] == NULL) {
             continue;
         }
-        struct ColliderComponent* our_collider = colliders->components[i];
+        struct ColliderComponent* our_collider = colliders[i];
 
         if (positions[i] == NULL) {
             TraceLog(LOG_ERROR, "Collider %u has no position component", i);
@@ -89,10 +89,10 @@ void UpdateColliders(struct PositionComponent* positions[MAX_ENTITIES], struct C
         }
 
         for (Entity j = 0; j < MAX_ENTITIES; j++) {
-            if (i == j || colliders->components[j] == NULL || positions[j] == NULL) {
+            if (i == j || colliders[j] == NULL || positions[j] == NULL) {
                 continue;
             }
-            struct ColliderComponent* their_collider = colliders->components[j];
+            struct ColliderComponent* their_collider = colliders[j];
 
             if (positions[j] == NULL) {
                 TraceLog(LOG_ERROR, "Collider %u has no position component", j);

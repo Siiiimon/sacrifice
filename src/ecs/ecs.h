@@ -11,6 +11,7 @@ enum ComponentType {
     COMPONENT_TYPE_POSITION,
     COMPONENT_TYPE_VELOCITY,
     COMPONENT_TYPE_SPRITE,
+    COMPONENT_TYPE_COLLIDER,
 };
 
 struct ECS {
@@ -22,6 +23,7 @@ struct ECS {
     struct PositionComponent* position_component_array[MAX_ENTITIES];
     struct VelocityComponent* velocity_component_array[MAX_ENTITIES];
     struct SpriteComponent* sprite_component_array[MAX_ENTITIES];
+    struct ColliderComponent* collider_component_array[MAX_ENTITIES];
 };
 
 struct ECS* NewECS(void);

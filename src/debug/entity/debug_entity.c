@@ -84,7 +84,11 @@ void DrawEntityInspector(struct GameContext* game_context) {
             DrawSpriteDebug(sprite);
         }
 
-        struct ColliderComponent* collider = GetCollider(game_context->world->colliders, entity);
+        struct ColliderComponent* collider = GetComponentOfEntity(
+            game_context->world->ecs,
+            entity,
+            COMPONENT_TYPE_SPRITE
+        );
         if (position && collider) {
             DrawColliderDebug(collider);
         }

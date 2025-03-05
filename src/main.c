@@ -47,7 +47,6 @@ int main(void)
 
     game_context->world = malloc(sizeof(struct World));
     game_context->world->ecs = NewECS();
-    game_context->world->colliders = NewColliderComponentArray();
     game_context->world->healths = NewHealthComponentArray();
     game_context->world->harms = NewHarmComponentArray();
     game_context->world->chase_behaviours = NewChaseBehaviourComponentArray();
@@ -86,8 +85,12 @@ int main(void)
         NewSprite(cat),
         COMPONENT_TYPE_SPRITE
     );
-    // AddCircleColliderToEntity(player, game_context->world->colliders, cat.height / 2, CLITERAL(Vector2){cat.width / 2, cat.height / 2}, true);
-    AddRectangleColliderToEntity(player, game_context->world->colliders, cat.width, cat.height, CLITERAL(Vector2){cat.width / 2, cat.height / 2}, true);
+    AttachComponentToEntity(
+        game_context->world->ecs,
+        player,
+        NewRectangleCollider(cat.width, cat.height, CLITERAL(Vector2){cat.width / 2, cat.height / 2}, true),
+        COMPONENT_TYPE_COLLIDER
+    );
     AddHealthToEntity(player, game_context->world->healths, 100);
 
     AttachComponentToEntity(
@@ -108,7 +111,12 @@ int main(void)
         NewSprite(wall_text),
         COMPONENT_TYPE_SPRITE
     );
-    AddRectangleColliderToEntity(wall_a, game_context->world->colliders, wall_text.width, wall_text.height, CLITERAL(Vector2){wall_text.width / 2, wall_text.height / 2}, true);
+    AttachComponentToEntity(
+        game_context->world->ecs,
+        wall_a,
+        NewRectangleCollider(wall_text.width, wall_text.height, CLITERAL(Vector2){wall_text.width / 2, wall_text.height / 2}, true),
+        COMPONENT_TYPE_COLLIDER
+    );
 
     // AddPositionToEntity(wall_b, game_context->world->positions, 200, (game_context->game_height / 2) + 25);
     // AddSpriteToEntity(wall_b, game_context->world->sprites, wall_text);
@@ -138,7 +146,12 @@ int main(void)
         NewSprite(rotund_text),
         COMPONENT_TYPE_SPRITE
     );
-    AddCircleColliderToEntity(rotund, game_context->world->colliders, rotund_text.width / 2, CLITERAL(Vector2){rotund_text.width / 2, rotund_text.height / 2}, true);
+    AttachComponentToEntity(
+        game_context->world->ecs,
+        rotund,
+        NewCircleCollider(rotund_text.width / 2, CLITERAL(Vector2){rotund_text.width / 2, rotund_text.height / 2}, true),
+        COMPONENT_TYPE_COLLIDER
+    );
     AddChaseBehaviourToEntity(rotund, game_context->world->chase_behaviours, player);
     AddHarmToEntity(rotund, game_context->world->harms, 10);
 
@@ -172,12 +185,12 @@ int main(void)
 
         UpdateMovement(game_context->world->ecs->position_component_array, game_context->world->ecs->velocity_component_array);
         UpdateChaseBehaviours(game_context->world->ecs->position_component_array, game_context->world->ecs->velocity_component_array, game_context->world->chase_behaviours);
-        UpdateColliders(game_context->world->ecs->position_component_array, game_context->world->colliders, game_context->world->ecs->tag_component_array);
-        UpdateMapBounds(game_context->world->ecs->position_component_array, game_context->world->colliders, CLITERAL(Vector2){game_context->game_width, game_context->game_height});
+        UpdateColliders(game_context->world->ecs->position_component_array, game_context->world->ecs->collider_component_array, game_context->world->ecs->tag_component_array);
+        UpdateMapBounds(game_context->world->ecs->position_component_array, game_context->world->ecs->collider_component_array, CLITERAL(Vector2){game_context->game_width, game_context->game_height});
         if (game_context->world->should_draw_collision_bounds) {
-            DrawCollisionBounds(game_context->world->debug_layer, game_context->world->ecs->position_component_array, game_context->world->colliders);
+            DrawCollisionBounds(game_context->world->debug_layer, game_context->world->ecs->position_component_array, game_context->world->ecs->collider_component_array);
         }
-        UpdateCombat(game_context->world->colliders, game_context->world->harms, game_context->world->healths);
+        UpdateCombat(game_context->world->ecs->collider_component_array, game_context->world->harms, game_context->world->healths);
 
         BeginDrawing();
 

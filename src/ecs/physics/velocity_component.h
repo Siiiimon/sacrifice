@@ -5,20 +5,12 @@
 
 #include <ecs.h>
 
-struct VelocityComponentArray {
-    struct VelocityComponent* components[MAX_ENTITIES];
-};
-
 struct VelocityComponent {
     float x;
     float y;
 };
 
-struct VelocityComponentArray* NewVelocityComponentArray(void);
-void FreeVelocityComponentArray(struct VelocityComponentArray* velocities);
-
-void AddVelocityToEntity(Entity entity, struct VelocityComponentArray* velocities, float x, float y);
-struct VelocityComponent* GetVelocity(struct VelocityComponentArray* velocities, Entity entity);
+struct VelocityComponent* NewVelocity(float x, float y);
 void FreeVelocity(struct VelocityComponent* velocity);
 
 #endif

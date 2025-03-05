@@ -8,6 +8,7 @@ typedef unsigned int Entity;
 
 enum ComponentType {
     COMPONENT_TYPE_POSITION,
+    COMPONENT_TYPE_VELOCITY,
 };
 
 struct ECS {
@@ -16,6 +17,7 @@ struct ECS {
     Entity next_entity;
 
     struct PositionComponent* position_component_array[MAX_ENTITIES];
+    struct VelocityComponent* velocity_component_array[MAX_ENTITIES];
 };
 
 struct ECS* NewECS(void);

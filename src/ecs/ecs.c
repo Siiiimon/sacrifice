@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-struct ECS* NewEntityManager(void) {
+struct ECS* NewECS(void) {
     struct ECS* manager = malloc(sizeof(struct ECS));
     if (!manager) {
         TraceLog(LOG_ERROR, "Failed to allocate memory for EntityManager");
@@ -15,8 +15,40 @@ struct ECS* NewEntityManager(void) {
     return manager;
 }
 
-void FreeEntityManager(struct ECS *manager) {
+void FreeECS(struct ECS *manager) {
     free(manager);
+}
+
+void AttachComponentToEntity(struct ECS* ecs, Entity entity, void* component, enum ComponentType component_type) {
+    if (!ecs->active_entities[entity]) {
+        TraceLog(LOG_ERROR, "Failed to attach component to %u, but it's not an active entity", entity);
+        return;
+    }
+
+    switch (component_type) {
+    case COMPONENT_TYPE_POSITION:
+        ecs->position_component_array[entity] = (struct PositionComponent*)component;
+        break;
+    default:
+        TraceLog(LOG_ERROR, "Failed to attach component to %u, but it's an unknown component type");
+    }
+}
+
+void* GetComponentOfEntity(struct ECS* ecs, Entity entity, enum ComponentType component_type) {
+    if (!ecs->active_entities[entity]) {
+        TraceLog(LOG_ERROR, "Failed to get component of %u, but it's not an active entity", entity);
+        return NULL;
+    }
+
+    switch (component_type) {
+    case COMPONENT_TYPE_POSITION:
+        return ecs->position_component_array[entity];
+    default:
+        TraceLog(LOG_ERROR, "Failed to get component of %u, but it's an unknown component type");
+    }
+
+    TraceLog(LOG_ERROR, "How did we get here?");
+    return NULL;
 }
 
 Entity NewEntity(struct ECS* manager) {

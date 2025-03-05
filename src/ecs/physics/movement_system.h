@@ -4,6 +4,6 @@
 #include "position_component.h"
 #include "velocity_component.h"
 
-void UpdateMovement(struct PositionComponentArray* positions, struct VelocityComponentArray* velocity_components);
+void UpdateMovement(struct PositionComponent* positions[MAX_ENTITIES], struct VelocityComponentArray* velocity_components);
 
 #endif

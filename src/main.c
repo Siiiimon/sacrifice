@@ -46,9 +46,8 @@ int main(void)
     Texture rotund_text = LoadTextureFromFile("assets/sprites/rotund_specimen.png");
 
     game_context->world = malloc(sizeof(struct World));
-    game_context->world->entities = NewEntityManager();
+    game_context->world->ecs = NewECS();
     game_context->world->tags = NewTagComponentArray();
-    game_context->world->positions = NewPositionComponentArray();
     game_context->world->velocities = NewVelocityComponentArray();
     game_context->world->sprites = NewSpriteComponentArray();
     game_context->world->colliders = NewColliderComponentArray();
@@ -61,13 +60,19 @@ int main(void)
     game_context->world->debug_layer = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
     game_context->world->should_draw_collision_bounds = false;
 
-    Entity player = NewEntity(game_context->world->entities);
-    Entity wall_a = NewEntity(game_context->world->entities);
+    Entity player = NewEntity(game_context->world->ecs);
+    Entity wall_a = NewEntity(game_context->world->ecs);
     // unsigned int wall_b = NewEntity(game_context->world->entities);
-    Entity rotund = NewEntity(game_context->world->entities);
+    Entity rotund = NewEntity(game_context->world->ecs);
 
     AddTagToEntity(player, game_context->world->tags, ENTITY_TAG_PLAYER);
-    AddPositionToEntity(player, game_context->world->positions, game_context->game_width / 2, game_context->game_height / 2);
+    // AddPositionToEntity(player, game_context->world->positions, game_context->game_width / 2, game_context->game_height / 2);
+    AttachComponentToEntity(
+        game_context->world->ecs,
+        player,
+        NewPosition(game_context->game_width / 2, game_context->game_height / 2),
+        COMPONENT_TYPE_POSITION
+    );
     AddVelocityToEntity(player, game_context->world->velocities, 0.0f, 0.0f);
     AddSpriteToEntity(player, game_context->world->sprites, cat);
     // AddCircleColliderToEntity(player, game_context->world->colliders, cat.height / 2, CLITERAL(Vector2){cat.width / 2, cat.height / 2}, true);
@@ -75,7 +80,13 @@ int main(void)
     AddHealthToEntity(player, game_context->world->healths, 100);
 
     AddTagToEntity(wall_a, game_context->world->tags, ENTITY_TAG_WALL);
-    AddPositionToEntity(wall_a, game_context->world->positions, 200, (game_context->game_height / 2) - 75);
+    // AddPositionToEntity(wall_a, game_context->world->positions, 200, (game_context->game_height / 2) - 75);
+    AttachComponentToEntity(
+        game_context->world->ecs,
+        wall_a,
+        NewPosition(200, (game_context->game_height / 2) - 75),
+        COMPONENT_TYPE_POSITION
+    );
     AddSpriteToEntity(wall_a, game_context->world->sprites, wall_text);
     AddRectangleColliderToEntity(wall_a, game_context->world->colliders, wall_text.width, wall_text.height, CLITERAL(Vector2){wall_text.width / 2, wall_text.height / 2}, true);
 
@@ -84,7 +95,13 @@ int main(void)
     // AddRectangleColliderToEntity(wall_b, game_context->world->colliders, wall_text.width, wall_text.height, CLITERAL(Vector2){wall_text.width / 2, wall_text.height / 2}, true);
 
     AddTagToEntity(rotund, game_context->world->tags, ENTITY_TAG_ENEMY);
-    AddPositionToEntity(rotund, game_context->world->positions, game_context->game_width - 300, game_context->game_height / 2);
+    // AddPositionToEntity(rotund, game_context->world->positions, game_context->game_width - 300, game_context->game_height / 2);
+    AttachComponentToEntity(
+        game_context->world->ecs,
+        rotund,
+        NewPosition(game_context->game_width - 300, game_context->game_height / 2),
+        COMPONENT_TYPE_POSITION
+    );
     AddVelocityToEntity(rotund, game_context->world->velocities, 0.0f, 0.0f);
     AddSpriteToEntity(rotund, game_context->world->sprites, rotund_text);
     AddCircleColliderToEntity(rotund, game_context->world->colliders, rotund_text.width / 2, CLITERAL(Vector2){rotund_text.width / 2, rotund_text.height / 2}, true);
@@ -115,12 +132,12 @@ int main(void)
             player_velocity->y = player_movement.y;
         }
 
-        UpdateMovement(game_context->world->positions, game_context->world->velocities);
-        UpdateChaseBehaviours(game_context->world->positions, game_context->world->velocities, game_context->world->chase_behaviours);
-        UpdateColliders(game_context->world->positions, game_context->world->colliders, game_context->world->tags);
-        UpdateMapBounds(game_context->world->positions, game_context->world->colliders, CLITERAL(Vector2){game_context->game_width, game_context->game_height});
+        UpdateMovement(game_context->world->ecs->position_component_array, game_context->world->velocities);
+        UpdateChaseBehaviours(game_context->world->ecs->position_component_array, game_context->world->velocities, game_context->world->chase_behaviours);
+        UpdateColliders(game_context->world->ecs->position_component_array, game_context->world->colliders, game_context->world->tags);
+        UpdateMapBounds(game_context->world->ecs->position_component_array, game_context->world->colliders, CLITERAL(Vector2){game_context->game_width, game_context->game_height});
         if (game_context->world->should_draw_collision_bounds) {
-            DrawCollisionBounds(game_context->world->debug_layer, game_context->world->positions, game_context->world->colliders);
+            DrawCollisionBounds(game_context->world->debug_layer, game_context->world->ecs->position_component_array, game_context->world->colliders);
         }
         UpdateCombat(game_context->world->colliders, game_context->world->harms, game_context->world->healths);
 
@@ -128,7 +145,7 @@ int main(void)
 
         ClearBackground(DARKGRAY);
 
-        RenderSprites(game_context->world->sprites, game_context->world->positions);
+        RenderSprites(game_context->world->sprites, game_context->world->ecs->position_component_array);
 
         // manually drawing player health bar for now
         DrawRectangleLinesEx(

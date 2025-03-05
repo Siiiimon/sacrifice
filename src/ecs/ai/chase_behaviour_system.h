@@ -6,7 +6,7 @@
 #include "ecs/physics/velocity_component.h"
 
 void UpdateChaseBehaviours(
-    struct PositionComponentArray* positions,
+    struct PositionComponent* positions[MAX_ENTITIES],
     struct VelocityComponentArray* velocities,
     struct ChaseBehaviourComponentArray* chaseBehaviours
 );

@@ -5,14 +5,14 @@
 
 #include <debug_data.h>
 
-void DrawCollisionBounds(RenderTexture2D debug_layer, struct PositionComponentArray* positions, struct ColliderComponentArray* colliders) {
+void DrawCollisionBounds(RenderTexture2D debug_layer, struct PositionComponent* positions[MAX_ENTITIES], struct ColliderComponentArray* colliders) {
     BeginTextureMode(debug_layer);
     for (Entity i = 0; i < MAX_ENTITIES; i++) {
         if (colliders->components[i] == NULL) continue;
         struct ColliderComponent* collider = colliders->components[i];
 
-        if (positions->components[i] == NULL) continue;
-        struct PositionComponent* position = positions->components[i];
+        if (positions[i] == NULL) continue;
+        struct PositionComponent* position = positions[i];
 
         if (collider->shape_type == COLLIDER_SHAPE_CIRCLE) {
             if (collider->colliding_count > 0) {

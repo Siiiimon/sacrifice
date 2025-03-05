@@ -56,7 +56,11 @@ void DrawEntityInspector(struct GameContext* game_context) {
         if (position) {
             DrawPositionDebug(game_context->world->debug_layer, position);
         }
-        struct VelocityComponent* velocity = GetVelocity(game_context->world->velocities, entity);
+        struct VelocityComponent* velocity = GetComponentOfEntity(
+            game_context->world->ecs,
+            entity,
+            COMPONENT_TYPE_VELOCITY
+        );
         if (velocity) {
             DrawVelocityDebug(velocity);
         }

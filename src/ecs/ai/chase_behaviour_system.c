@@ -4,12 +4,12 @@
 
 void UpdateChaseBehaviours(
     struct PositionComponent* positions[MAX_ENTITIES],
-    struct VelocityComponentArray* velocities,
+    struct VelocityComponent* velocities[MAX_ENTITIES],
     struct ChaseBehaviourComponentArray* chaseBehaviours
 ) {
     for (Entity i = 0; i < MAX_ENTITIES; i++) {
         struct PositionComponent* position = positions[i];
-        struct VelocityComponent* velocity = velocities->components[i];
+        struct VelocityComponent* velocity = velocities[i];
         struct ChaseBehaviourComponent* chaseBehaviour = chaseBehaviours->components[i];
 
         if (!position || !velocity || !chaseBehaviour)

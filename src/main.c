@@ -48,7 +48,6 @@ int main(void)
     game_context->world = malloc(sizeof(struct World));
     game_context->world->ecs = NewECS();
     game_context->world->tags = NewTagComponentArray();
-    game_context->world->velocities = NewVelocityComponentArray();
     game_context->world->sprites = NewSpriteComponentArray();
     game_context->world->colliders = NewColliderComponentArray();
     game_context->world->healths = NewHealthComponentArray();
@@ -66,21 +65,24 @@ int main(void)
     Entity rotund = NewEntity(game_context->world->ecs);
 
     AddTagToEntity(player, game_context->world->tags, ENTITY_TAG_PLAYER);
-    // AddPositionToEntity(player, game_context->world->positions, game_context->game_width / 2, game_context->game_height / 2);
     AttachComponentToEntity(
         game_context->world->ecs,
         player,
         NewPosition(game_context->game_width / 2, game_context->game_height / 2),
         COMPONENT_TYPE_POSITION
     );
-    AddVelocityToEntity(player, game_context->world->velocities, 0.0f, 0.0f);
+    AttachComponentToEntity(
+        game_context->world->ecs,
+        player,
+        NewVelocity(0.0f, 0.0f),
+        COMPONENT_TYPE_VELOCITY
+    );
     AddSpriteToEntity(player, game_context->world->sprites, cat);
     // AddCircleColliderToEntity(player, game_context->world->colliders, cat.height / 2, CLITERAL(Vector2){cat.width / 2, cat.height / 2}, true);
     AddRectangleColliderToEntity(player, game_context->world->colliders, cat.width, cat.height, CLITERAL(Vector2){cat.width / 2, cat.height / 2}, true);
     AddHealthToEntity(player, game_context->world->healths, 100);
 
     AddTagToEntity(wall_a, game_context->world->tags, ENTITY_TAG_WALL);
-    // AddPositionToEntity(wall_a, game_context->world->positions, 200, (game_context->game_height / 2) - 75);
     AttachComponentToEntity(
         game_context->world->ecs,
         wall_a,
@@ -95,20 +97,28 @@ int main(void)
     // AddRectangleColliderToEntity(wall_b, game_context->world->colliders, wall_text.width, wall_text.height, CLITERAL(Vector2){wall_text.width / 2, wall_text.height / 2}, true);
 
     AddTagToEntity(rotund, game_context->world->tags, ENTITY_TAG_ENEMY);
-    // AddPositionToEntity(rotund, game_context->world->positions, game_context->game_width - 300, game_context->game_height / 2);
     AttachComponentToEntity(
         game_context->world->ecs,
         rotund,
         NewPosition(game_context->game_width - 300, game_context->game_height / 2),
         COMPONENT_TYPE_POSITION
     );
-    AddVelocityToEntity(rotund, game_context->world->velocities, 0.0f, 0.0f);
+    AttachComponentToEntity(
+        game_context->world->ecs,
+        rotund,
+        NewVelocity(0.0f, 0.0f),
+        COMPONENT_TYPE_VELOCITY
+    );
     AddSpriteToEntity(rotund, game_context->world->sprites, rotund_text);
     AddCircleColliderToEntity(rotund, game_context->world->colliders, rotund_text.width / 2, CLITERAL(Vector2){rotund_text.width / 2, rotund_text.height / 2}, true);
     AddChaseBehaviourToEntity(rotund, game_context->world->chase_behaviours, player);
     AddHarmToEntity(rotund, game_context->world->harms, 10);
 
-    struct VelocityComponent* player_velocity = GetVelocity(game_context->world->velocities, player);
+    struct VelocityComponent* player_velocity = GetComponentOfEntity(
+        game_context->world->ecs,
+        player,
+        COMPONENT_TYPE_VELOCITY
+    );
     struct HealthComponent* player_health = GetHealth(game_context->world->healths, player);
 
     rlImGuiSetup(true);
@@ -132,8 +142,8 @@ int main(void)
             player_velocity->y = player_movement.y;
         }
 
-        UpdateMovement(game_context->world->ecs->position_component_array, game_context->world->velocities);
-        UpdateChaseBehaviours(game_context->world->ecs->position_component_array, game_context->world->velocities, game_context->world->chase_behaviours);
+        UpdateMovement(game_context->world->ecs->position_component_array, game_context->world->ecs->velocity_component_array);
+        UpdateChaseBehaviours(game_context->world->ecs->position_component_array, game_context->world->ecs->velocity_component_array, game_context->world->chase_behaviours);
         UpdateColliders(game_context->world->ecs->position_component_array, game_context->world->colliders, game_context->world->tags);
         UpdateMapBounds(game_context->world->ecs->position_component_array, game_context->world->colliders, CLITERAL(Vector2){game_context->game_width, game_context->game_height});
         if (game_context->world->should_draw_collision_bounds) {

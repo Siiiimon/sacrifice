@@ -9,9 +9,13 @@ struct ECS* NewECS(void) {
         TraceLog(LOG_ERROR, "Failed to allocate memory for EntityManager");
         return NULL;
     }
+
     memset(manager->entities, 0, sizeof(manager->entities));
     memset(manager->active_entities, false, sizeof(manager->active_entities));
     manager->next_entity = 1;
+    memset(manager->position_component_array, 0, sizeof(struct PositionComponent*) * MAX_ENTITIES);
+    memset(manager->velocity_component_array, 0, sizeof(struct VelocityComponent*) * MAX_ENTITIES);
+
     return manager;
 }
 
@@ -29,6 +33,8 @@ void AttachComponentToEntity(struct ECS* ecs, Entity entity, void* component, en
     case COMPONENT_TYPE_POSITION:
         ecs->position_component_array[entity] = (struct PositionComponent*)component;
         break;
+    case COMPONENT_TYPE_VELOCITY:
+        ecs->velocity_component_array[entity] = (struct VelocityComponent*)component;
     default:
         TraceLog(LOG_ERROR, "Failed to attach component to %u, but it's an unknown component type");
     }
@@ -43,6 +49,8 @@ void* GetComponentOfEntity(struct ECS* ecs, Entity entity, enum ComponentType co
     switch (component_type) {
     case COMPONENT_TYPE_POSITION:
         return ecs->position_component_array[entity];
+    case COMPONENT_TYPE_VELOCITY:
+        return ecs->velocity_component_array[entity];
     default:
         TraceLog(LOG_ERROR, "Failed to get component of %u, but it's an unknown component type");
     }

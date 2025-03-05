@@ -13,6 +13,7 @@ struct ECS* NewECS(void) {
     memset(manager->entities, 0, sizeof(manager->entities));
     memset(manager->active_entities, false, sizeof(manager->active_entities));
     manager->next_entity = 1;
+    memset(manager->tag_component_array, 0, sizeof(struct TagComponent*) * MAX_ENTITIES);
     memset(manager->position_component_array, 0, sizeof(struct PositionComponent*) * MAX_ENTITIES);
     memset(manager->velocity_component_array, 0, sizeof(struct VelocityComponent*) * MAX_ENTITIES);
 
@@ -30,6 +31,8 @@ void AttachComponentToEntity(struct ECS* ecs, Entity entity, void* component, en
     }
 
     switch (component_type) {
+    case COMPONENT_TYPE_TAG:
+        ecs->tag_component_array[entity] = (struct TagComponent*)component;
     case COMPONENT_TYPE_POSITION:
         ecs->position_component_array[entity] = (struct PositionComponent*)component;
         break;
@@ -47,6 +50,8 @@ void* GetComponentOfEntity(struct ECS* ecs, Entity entity, enum ComponentType co
     }
 
     switch (component_type) {
+    case COMPONENT_TYPE_TAG:
+        return ecs->tag_component_array[entity];
     case COMPONENT_TYPE_POSITION:
         return ecs->position_component_array[entity];
     case COMPONENT_TYPE_VELOCITY:

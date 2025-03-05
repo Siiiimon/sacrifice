@@ -37,7 +37,11 @@ void DrawEntitiesDebugUI(struct GameContext* game_context) {
                     igTableNextColumn();
                     igText("%u", entity);
                     igTableNextColumn();
-                    struct TagComponent* tag = GetTag(game_context->world->tags, entity);
+                    struct TagComponent* tag = GetComponentOfEntity(
+                        game_context->world->ecs,
+                        entity,
+                        COMPONENT_TYPE_TAG
+                    );
                     if (!tag) {
                         igText("None");
                     } else {

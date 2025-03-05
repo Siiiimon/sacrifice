@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 void UpdateMovement(struct PositionComponentArray* positions, struct VelocityComponentArray* velocities) {
-    for (unsigned int i = 0; i < MAX_ENTITIES; i++) {
+    for (Entity i = 0; i < MAX_ENTITIES; i++) {
         struct PositionComponent* position = positions->components[i];
         struct VelocityComponent* velocity = velocities->components[i];
         if (position == NULL || velocity == NULL) continue;

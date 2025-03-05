@@ -42,7 +42,7 @@ void DrawEntityInspector(struct GameContext* game_context) {
         game_context->debug_data->show_entity_inspector_window &&
         igBegin("Entity Inspector", &game_context->debug_data->show_entity_inspector_window, ImGuiWindowFlags_AlwaysAutoResize)
     ) {
-        unsigned int entity = game_context->debug_data->currently_inspected_entity_id;
+        Entity entity = game_context->debug_data->currently_inspected_entity_id;
         if (entity == 0) {
             igText("No Entity Selected!");
             igEnd();

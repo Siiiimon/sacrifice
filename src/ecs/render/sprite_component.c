@@ -28,7 +28,7 @@ void FreeSpriteComponentArray(struct SpriteComponentArray* sprites) {
 }
 
 
-void AddSpriteToEntity(unsigned int entity, struct SpriteComponentArray* sprites, Texture texture) {
+void AddSpriteToEntity(Entity entity, struct SpriteComponentArray* sprites, Texture texture) {
     if (!sprites) {
         TraceLog(LOG_ERROR, "Failed to add Sprite because SpriteComponentArray is NULL");
         return;
@@ -54,7 +54,7 @@ void AddSpriteToEntity(unsigned int entity, struct SpriteComponentArray* sprites
     sprites->components[entity] = sprite;
 }
 
-struct SpriteComponent* GetSprite(struct SpriteComponentArray* sprites, unsigned int entity) {
+struct SpriteComponent* GetSprite(struct SpriteComponentArray* sprites, Entity entity) {
     if (!sprites) {
         TraceLog(LOG_ERROR, "Failed to get Sprite because SpriteComponentArray is NULL");
         return NULL;

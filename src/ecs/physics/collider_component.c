@@ -1,6 +1,8 @@
 #include "collider_component.h"
 #include "defs.h"
 #include "raylib.h"
+
+#include <ecs.h>
 #include <stdlib.h>
 
 struct ColliderComponentArray* NewColliderComponentArray(void) {
@@ -10,7 +12,7 @@ struct ColliderComponentArray* NewColliderComponentArray(void) {
         return NULL;
     }
 
-    for (unsigned int i = 0; i < MAX_ENTITIES; i++) {
+    for (Entity i = 0; i < MAX_ENTITIES; i++) {
         colliders->components[i] = NULL;
     }
 
@@ -20,7 +22,7 @@ struct ColliderComponentArray* NewColliderComponentArray(void) {
 void FreeColliderComponentArray(struct ColliderComponentArray* colliders) {
     if (!colliders) return;
 
-    for (unsigned int i = 0; i < MAX_ENTITIES; i++) {
+    for (Entity i = 0; i < MAX_ENTITIES; i++) {
         FreeCollider(colliders->components[i]);
     }
 
@@ -28,7 +30,7 @@ void FreeColliderComponentArray(struct ColliderComponentArray* colliders) {
 }
 
 
-void AddRectangleColliderToEntity(unsigned int entity, struct ColliderComponentArray* colliders, float width, float height, Vector2 offset, bool is_bound_to_map) {
+void AddRectangleColliderToEntity(Entity entity, struct ColliderComponentArray* colliders, float width, float height, Vector2 offset, bool is_bound_to_map) {
     if (!colliders) return;
     if (entity >= MAX_ENTITIES) {
         TraceLog(LOG_ERROR, "Entity index out of bounds");
@@ -43,7 +45,7 @@ void AddRectangleColliderToEntity(unsigned int entity, struct ColliderComponentA
 
     collider->offset = offset;
     collider->colliding_count = 0;
-    for (unsigned int i = 0; i < MAX_COLLISIONS; i++) {
+    for (Entity i = 0; i < MAX_COLLISIONS; i++) {
         collider->colliding_with[i] = 0;
     }
     collider->is_bound_to_map = is_bound_to_map;
@@ -58,7 +60,7 @@ void AddRectangleColliderToEntity(unsigned int entity, struct ColliderComponentA
     colliders->components[entity] = collider;
 }
 
-void AddCircleColliderToEntity(unsigned int entity, struct ColliderComponentArray* colliders, float radius, Vector2 offset, bool is_bound_to_map) {
+void AddCircleColliderToEntity(Entity entity, struct ColliderComponentArray* colliders, float radius, Vector2 offset, bool is_bound_to_map) {
     if (!colliders) return;
     if (entity >= MAX_ENTITIES) {
         TraceLog(LOG_ERROR, "Entity index out of bounds");
@@ -73,7 +75,7 @@ void AddCircleColliderToEntity(unsigned int entity, struct ColliderComponentArra
 
     collider->offset = offset;
     collider->colliding_count = 0;
-    for (unsigned int i = 0; i < MAX_COLLISIONS; i++) {
+    for (Entity i = 0; i < MAX_COLLISIONS; i++) {
         collider->colliding_with[i] = 0;
     }
     collider->is_bound_to_map = is_bound_to_map;
@@ -87,7 +89,7 @@ void AddCircleColliderToEntity(unsigned int entity, struct ColliderComponentArra
     colliders->components[entity] = collider;
 }
 
-struct ColliderComponent* GetCollider(struct ColliderComponentArray* colliders, unsigned int entity) {
+struct ColliderComponent* GetCollider(struct ColliderComponentArray* colliders, Entity entity) {
     if (!colliders) return NULL;
     if (entity >= MAX_ENTITIES) {
         TraceLog(LOG_ERROR, "Entity index out of bounds");

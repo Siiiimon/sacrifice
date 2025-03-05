@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 void UpdateMapBounds(struct PositionComponentArray* positions, struct ColliderComponentArray* colliders, Vector2 map_size) {
-    for (unsigned int i = 0; i < MAX_ENTITIES; i++) {
+    for (Entity i = 0; i < MAX_ENTITIES; i++) {
         struct PositionComponent* position = positions->components[i];
         struct ColliderComponent* collider = colliders->components[i];
         if (position == NULL || colliders == NULL) continue;

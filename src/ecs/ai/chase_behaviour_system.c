@@ -7,7 +7,7 @@ void UpdateChaseBehaviours(
     struct VelocityComponentArray* velocities,
     struct ChaseBehaviourComponentArray* chaseBehaviours
 ) {
-    for (unsigned int i = 0; i < MAX_ENTITIES; i++) {
+    for (Entity i = 0; i < MAX_ENTITIES; i++) {
         struct PositionComponent* position = positions->components[i];
         struct VelocityComponent* velocity = velocities->components[i];
         struct ChaseBehaviourComponent* chaseBehaviour = chaseBehaviours->components[i];

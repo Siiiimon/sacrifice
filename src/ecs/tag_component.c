@@ -9,7 +9,7 @@ struct TagComponentArray* NewTagComponentArray(void) {
         return NULL;
     }
 
-    for (unsigned int i = 0; i < MAX_ENTITIES; i++) {
+    for (Entity i = 0; i < MAX_ENTITIES; i++) {
         tags->components[i] = NULL;
     }
 
@@ -19,14 +19,14 @@ struct TagComponentArray* NewTagComponentArray(void) {
 void FreeTagComponentArray(struct TagComponentArray* tags) {
     if (!tags) return;
 
-    for (unsigned int i = 0; i < MAX_ENTITIES; i++) {
+    for (Entity i = 0; i < MAX_ENTITIES; i++) {
         FreeTag(tags->components[i]);
     }
 
     free(tags);
 }
 
-void AddTagToEntity(unsigned int entity, struct TagComponentArray* tags, enum ENTITY_TAG tag) {
+void AddTagToEntity(Entity entity, struct TagComponentArray* tags, enum ENTITY_TAG tag) {
     if (!tags) return;
     if (entity >= MAX_ENTITIES) {
         TraceLog(LOG_ERROR, "Entity index out of bounds");
@@ -47,7 +47,7 @@ void AddTagToEntity(unsigned int entity, struct TagComponentArray* tags, enum EN
     tags->components[entity] = component;
 }
 
-struct TagComponent* GetTag(struct TagComponentArray* tags, unsigned int entity) {
+struct TagComponent* GetTag(struct TagComponentArray* tags, Entity entity) {
     if (!tags) return NULL;
     if (entity >= MAX_ENTITIES) {
         TraceLog(LOG_ERROR, "Entity index out of bounds");

@@ -1,6 +1,8 @@
 #include "harm_component.h"
 #include "defs.h"
 #include "raylib.h"
+
+#include <ecs.h>
 #include <stdlib.h>
 
 struct HarmComponentArray* NewHarmComponentArray(void) {
@@ -10,7 +12,7 @@ struct HarmComponentArray* NewHarmComponentArray(void) {
         return NULL;
     }
 
-    for (unsigned int i = 0; i < MAX_ENTITIES; i++) {
+    for (Entity i = 0; i < MAX_ENTITIES; i++) {
         harms->components[i] = NULL;
     }
 
@@ -25,7 +27,7 @@ void FreeHarmComponentArray(struct HarmComponentArray* harms) {
     free(harms);
 }
 
-void AddHarmToEntity(unsigned int entity, struct HarmComponentArray* harms, int damage) {
+void AddHarmToEntity(Entity entity, struct HarmComponentArray* harms, int damage) {
     if (!harms) return;
     if (entity >= MAX_ENTITIES) {
         TraceLog(LOG_ERROR, "entity index out of bounds");
@@ -46,7 +48,7 @@ void AddHarmToEntity(unsigned int entity, struct HarmComponentArray* harms, int 
     harms->components[entity] = component;
 }
 
-struct HarmComponent* GetHarm(struct HarmComponentArray* harms, unsigned int entity) {
+struct HarmComponent* GetHarm(struct HarmComponentArray* harms, Entity entity) {
     if (!harms) return NULL;
     if (entity >= MAX_ENTITIES) {
         TraceLog(LOG_ERROR, "entity index out of bounds");

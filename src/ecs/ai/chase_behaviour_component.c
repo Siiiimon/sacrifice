@@ -1,5 +1,7 @@
 #include "chase_behaviour_component.h"
 #include "raylib.h"
+
+#include <ecs.h>
 #include <stdlib.h>
 
 struct ChaseBehaviourComponentArray* NewChaseBehaviourComponentArray(void) {
@@ -9,7 +11,7 @@ struct ChaseBehaviourComponentArray* NewChaseBehaviourComponentArray(void) {
         return NULL;
     }
 
-    for (unsigned int i = 0; i < MAX_ENTITIES; i++) {
+    for (Entity i = 0; i < MAX_ENTITIES; i++) {
         chase_behaviours->components[i] = NULL;
     }
 
@@ -24,7 +26,7 @@ void FreeChaseBehaviourComponentArray(struct ChaseBehaviourComponentArray* chase
     free(chase_behaviours);
 }
 
-void AddChaseBehaviourToEntity(unsigned int entity, struct ChaseBehaviourComponentArray* chase_behaviours, unsigned int target) {
+void AddChaseBehaviourToEntity(Entity entity, struct ChaseBehaviourComponentArray* chase_behaviours, Entity target) {
     if (!chase_behaviours) return;
     if (entity >= MAX_ENTITIES) {
         TraceLog(LOG_ERROR, "entity index out of bounds");
@@ -45,7 +47,7 @@ void AddChaseBehaviourToEntity(unsigned int entity, struct ChaseBehaviourCompone
     chase_behaviours->components[entity] = component;
 }
 
-struct ChaseBehaviourComponent* GetChaseBehaviour(struct ChaseBehaviourComponentArray* chase_behaviours, unsigned int entity) {
+struct ChaseBehaviourComponent* GetChaseBehaviour(struct ChaseBehaviourComponentArray* chase_behaviours, Entity entity) {
     if (!chase_behaviours) return NULL;
     if (entity >= MAX_ENTITIES) {
         TraceLog(LOG_ERROR, "entity index out of bounds");

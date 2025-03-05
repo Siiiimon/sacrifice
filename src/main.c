@@ -61,10 +61,10 @@ int main(void)
     game_context->world->debug_layer = LoadRenderTexture(GetScreenWidth(), GetScreenHeight());
     game_context->world->should_draw_collision_bounds = false;
 
-    unsigned int player = NewEntity(game_context->world->entities);
-    unsigned int wall_a = NewEntity(game_context->world->entities);
+    Entity player = NewEntity(game_context->world->entities);
+    Entity wall_a = NewEntity(game_context->world->entities);
     // unsigned int wall_b = NewEntity(game_context->world->entities);
-    unsigned int rotund = NewEntity(game_context->world->entities);
+    Entity rotund = NewEntity(game_context->world->entities);
 
     AddTagToEntity(player, game_context->world->tags, ENTITY_TAG_PLAYER);
     AddPositionToEntity(player, game_context->world->positions, game_context->game_width / 2, game_context->game_height / 2);

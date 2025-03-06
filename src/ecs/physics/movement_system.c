@@ -1,7 +1,13 @@
 #include "movement_system.h"
+
+#include <raylib.h>
 #include <stdlib.h>
 
 void UpdateMovement(struct PositionComponent* positions[MAX_ENTITIES], struct VelocityComponent* velocities[MAX_ENTITIES]) {
+    if (!positions || !velocities) {
+        TraceLog(LOG_ERROR, "UpdateMovement: positions or velocities is NULL");
+        return;
+    }
     for (Entity i = 0; i < MAX_ENTITIES; i++) {
         struct PositionComponent* position = positions[i];
         struct VelocityComponent* velocity = velocities[i];

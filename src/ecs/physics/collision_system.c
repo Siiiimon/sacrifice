@@ -70,6 +70,10 @@ static bool CircleOnCircle(
 
 
 void UpdateColliders(struct PositionComponent* positions[MAX_ENTITIES], struct ColliderComponent* colliders[MAX_ENTITIES], struct TagComponent* tags[MAX_ENTITIES]) {
+    if (!positions || !colliders || !tags) {
+        TraceLog(LOG_ERROR, "UpdateColliders: positions, colliders or tags is NULL");
+        return;
+    }
     for (Entity i = 0; i < MAX_ENTITIES; i++) {
         if (colliders[i] == NULL) {
             continue;

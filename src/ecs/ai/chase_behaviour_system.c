@@ -5,12 +5,16 @@
 void UpdateChaseBehaviours(
     struct PositionComponent* positions[MAX_ENTITIES],
     struct VelocityComponent* velocities[MAX_ENTITIES],
-    struct ChaseBehaviourComponent* chaseBehaviours[MAX_ENTITIES]
+    struct ChaseBehaviourComponent* chase_behaviours[MAX_ENTITIES]
 ) {
+    if (!positions || !velocities || !chase_behaviours) {
+        TraceLog(LOG_ERROR, "UpdateChaseBehaviours: positions, velocities or chase_behaviours is NULL");
+        return;
+    }
     for (Entity i = 0; i < MAX_ENTITIES; i++) {
         struct PositionComponent* position = positions[i];
         struct VelocityComponent* velocity = velocities[i];
-        struct ChaseBehaviourComponent* chaseBehaviour = chaseBehaviours[i];
+        struct ChaseBehaviourComponent* chaseBehaviour = chase_behaviours[i];
 
         if (!position || !velocity || !chaseBehaviour)
             continue;

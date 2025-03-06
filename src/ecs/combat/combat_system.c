@@ -7,6 +7,10 @@ void UpdateCombat(
     struct HarmComponent* harms[MAX_ENTITIES],
     struct HealthComponent* healths[MAX_ENTITIES]
 ) {
+    if (!harms || !colliders || !healths) {
+        TraceLog(LOG_ERROR, "UpdateCombat: harms, colliders or healths is NULL");
+        return;
+    }
     for (Entity i = 0; i < MAX_ENTITIES; i++) {
         struct ColliderComponent* collider = colliders[i];
         struct HealthComponent* health = healths[i];
